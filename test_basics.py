@@ -135,7 +135,9 @@ class TestPersons(TestCase):
 }
 ''') as fname:
             popolo = Popolo(fname)
-            assert popolo.persons.first.wikidata == 'Q1343162'
+            person = popolo.persons.first
+            assert person.wikidata == 'Q1343162'
+            assert person.image == 'http://twin-peaks.example.org/harry.jpg'
 
     def test_person_repr(self):
         with example_file(b'{"persons": [{"name": "Paul l\'Astnam\u00e9"}]}') as fname:
