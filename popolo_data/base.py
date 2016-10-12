@@ -84,6 +84,22 @@ class Person(PopoloObject):
         return self.data.get('id')
 
     @property
+    def email(self):
+        return self.data.get('email')
+
+    @property
+    def gender(self):
+        return self.data.get('gender')
+
+    @property
+    def honorific_prefix(self):
+        return self.data.get('honorific_prefix')
+
+    @property
+    def honorific_suffix(self):
+        return self.data.get('honorific_suffix')
+
+    @property
     def image(self):
         return self.data.get('image')
 
@@ -94,6 +110,14 @@ class Person(PopoloObject):
     @property
     def national_identity(self):
         return self.data.get('national_identity')
+
+    @property
+    def summary(self):
+        return self.data.get('summary')
+
+    @property
+    def biography(self):
+        return self.data.get('biography')
 
     @property
     def wikidata(self):

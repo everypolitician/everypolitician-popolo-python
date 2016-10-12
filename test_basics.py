@@ -171,6 +171,33 @@ class TestPersons(TestCase):
             assert person.twitter == \
                 'https://twitter.com/notarealtwitteraccountforharry'
 
+    def test_simple_person_fields(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "email": "harry@example.org",
+            "image": "http://twin-peaks.example.org/harry.jpg",
+            "gender": "male",
+            "honorific_prefix": "Sheriff",
+            "honorific_suffix": "Bookhouse Boy",
+            "biography": "Harry S. Truman is the sheriff of Twin Peaks",
+            "summary": "He assists Dale Cooper in the Laura Palmer case"
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.name == "Harry Truman"
+            assert person.email == "harry@example.org"
+            assert person.image == "http://twin-peaks.example.org/harry.jpg"
+            assert person.gender == "male"
+            assert person.honorific_prefix == "Sheriff"
+            assert person.honorific_suffix == "Bookhouse Boy"
+            assert person.biography == "Harry S. Truman is the sheriff of Twin Peaks"
+            assert person.summary == "He assists Dale Cooper in the Laura Palmer case"
 
 class TestOrganizations(TestCase):
 
