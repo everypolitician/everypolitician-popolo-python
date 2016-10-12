@@ -112,6 +112,10 @@ class Person(PopoloObject):
         return self.data.get('name')
 
     @property
+    def sort_name(self):
+        return self.data.get('sort_name')
+
+    @property
     def national_identity(self):
         return self.data.get('national_identity')
 

@@ -164,6 +164,21 @@ class TestPersons(TestCase):
             assert person.twitter == \
                 'notarealtwitteraccountforharry'
 
+    def test_sort_name(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "sort_name": "Truman"
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.sort_name == 'Truman'
+
     def test_simple_person_fields(self):
         with example_file(b'''
 {
