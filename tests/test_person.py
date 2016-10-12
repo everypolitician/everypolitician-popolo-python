@@ -238,3 +238,22 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.birth_date == date(1946, 1, 24)
             assert person.death_date == date(2099, 12, 31)
+
+    def test_phone_and_fax(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "contact_details": [
+                {"type": "phone", "value": "9304832"},
+                {"type": "fax", "value": "9304833"}
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.phone == '9304832'
+            assert person.fax == '9304833'

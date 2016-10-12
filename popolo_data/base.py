@@ -143,6 +143,14 @@ class Person(PopoloObject):
     def twitter(self):
         return self.contact_detail('twitter') or self.link('twitter')
 
+    @property
+    def phone(self):
+        return self.contact_detail('phone')
+
+    @property
+    def fax(self):
+        return self.contact_detail('fax')
+
     def __repr__(self):
         fmt = str('<Person: {0}>')
         if six.PY2:
