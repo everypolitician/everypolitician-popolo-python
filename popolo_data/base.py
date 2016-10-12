@@ -70,6 +70,10 @@ class PopoloObject(object):
     def link(self, note):
         return self.get_related_value('links', 'note', note, 'url')
 
+    def contact_detail(self, contact_type):
+        return self.get_related_value(
+            'contact_details', 'type', contact_type, 'value')
+
 
 class Person(PopoloObject):
 
@@ -133,7 +137,7 @@ class Person(PopoloObject):
 
     @property
     def twitter(self):
-        return self.link('twitter')
+        return self.contact_detail('twitter') or self.link('twitter')
 
     def __repr__(self):
         fmt = str('<Person: {0}>')
