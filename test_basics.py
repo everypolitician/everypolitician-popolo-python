@@ -199,6 +199,39 @@ class TestPersons(TestCase):
             assert person.biography == "Harry S. Truman is the sheriff of Twin Peaks"
             assert person.summary == "He assists Dale Cooper in the Laura Palmer case"
 
+    def test_missing_birth_and_death_dates(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman"
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.birth_date is None
+            assert person.death_date is None
+
+    def test_full_birth_and_death_dates(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "birth_date": "1946-01-24",
+            "death_date": "2099-12-31"
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.birth_date == date(1946, 1, 24)
+            assert person.death_date == date(2099, 12, 31)
+
+
 class TestOrganizations(TestCase):
 
     def test_empty_file_gives_no_organizations(self):
