@@ -257,3 +257,24 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.phone == '9304832'
             assert person.fax == '9304833'
+
+    def test_person_facebook(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "links": [
+                {
+                    "note": "facebook",
+                    "url": "https://facebook.example.com/harry-s-truman"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.facebook == \
+                'https://facebook.example.com/harry-s-truman'

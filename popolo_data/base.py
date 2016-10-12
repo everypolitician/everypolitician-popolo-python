@@ -148,6 +148,10 @@ class Person(PopoloObject):
         return self.contact_detail('phone')
 
     @property
+    def facebook(self):
+        return self.link('facebook')
+
+    @property
     def fax(self):
         return self.contact_detail('fax')
 
