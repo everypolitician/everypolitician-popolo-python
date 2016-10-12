@@ -22,18 +22,53 @@ class PopoloObject(object):
             return datetime.strptime(d, '%Y-%m-%d').date()
         return default
 
-    def identifier(self, scheme):
+    def get_related_value(
+            self, popolo_array, info_type_key, info_type, info_value_key):
+        '''Get a value from one of the Popolo related objects
+
+        For example, if you have a person with related links, like
+        this:
+
+            {
+                "name": "Dale Cooper",
+                "links": [
+                    {
+                        "note": "wikipedia",
+                        "url": "https://en.wikipedia.org/wiki/Dale_Cooper"
+                    }
+                ]
+            }
+
+        When calling this method to get the Wikipedia URL, you would use:
+
+            popolo_array='links'
+            info_type_key='note'
+            info_type='wikipedia'
+            info_value_key='url'
+
+        ... so the following would work:
+
+            self.get_related_value('links', 'note', 'wikipedia', 'url')
+            # => 'https://en.wikipedia.org/wiki/Dale_Cooper'
+        '''
         matches = [
-            i['identifier'] for i in self.data.get('identifiers', [])
-            if i['scheme'] == scheme]
+            o[info_value_key] for o in self.data.get(popolo_array, [])
+            if o[info_type_key] == info_type]
         n = len(matches)
         if n == 0:
             return None
         elif n > 1:
-            msg = "More than one identifier found with scheme {0}; " \
-                "there were {1}"
-            raise MultipleObjectsReturned(msg.format(scheme, n))
+            msg = "Multiple {0} found with {1}: {2}; there were {3}"
+            raise MultipleObjectsReturned(msg.format(
+                popolo_array, info_type_key, info_type, n))
         return matches[0]
+
+    def identifier(self, scheme):
+        return self.get_related_value(
+            'identifiers', 'scheme', scheme, 'identifier')
+
+    def link(self, note):
+        return self.get_related_value('links', 'note', note, 'url')
 
 
 class Person(PopoloObject):
@@ -63,6 +98,10 @@ class Person(PopoloObject):
     @property
     def wikidata(self):
         return self.identifier('wikidata')
+
+    @property
+    def twitter(self):
+        return self.link('twitter')
 
     def __repr__(self):
         fmt = str('<Person: {0}>')

@@ -147,6 +147,28 @@ class TestPersons(TestCase):
             else:
                 assert repr(person) == u"<Person: Paul l'Astnamé>"
 
+    def test_person_contact_detail_twitter(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Harry Truman",
+            "image": "http://twin-peaks.example.org/harry.jpg",
+            "links": [
+                {
+                    "note": "twitter",
+                    "url": "https://twitter.com/notarealtwitteraccountforharry"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo(fname)
+            person = popolo.persons.first
+            assert person.twitter == \
+                'https://twitter.com/notarealtwitteraccountforharry'
+
 
 class TestOrganizations(TestCase):
 
