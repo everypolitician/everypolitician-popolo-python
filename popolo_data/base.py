@@ -19,8 +19,9 @@ def _is_name_current_at(name_object, date_string):
 
 class PopoloObject(object):
 
-    def __init__(self, data):
+    def __init__(self, data, all_popolo):
         self.data = data
+        self.all_popolo = all_popolo
 
     def get_date(self, attr, default):
         d = self.data.get(attr)
@@ -293,10 +294,10 @@ class Membership(PopoloObject):
 
 class PopoloCollection(object):
 
-    def __init__(self, data_list, object_class):
+    def __init__(self, data_list, object_class, all_popolo):
         self.object_class = object_class
         self.object_list = \
-            [self.object_class(data) for data in data_list]
+            [self.object_class(data, all_popolo) for data in data_list]
 
     def __len__(self):
         return len(self.object_list)
@@ -332,20 +333,20 @@ class PopoloCollection(object):
 
 class PersonCollection(PopoloCollection):
 
-    def __init__(self, persons_data):
+    def __init__(self, persons_data, all_popolo):
         super(PersonCollection, self).__init__(
-            persons_data, Person)
+            persons_data, Person, all_popolo)
 
 
 class OrganizationCollection(PopoloCollection):
 
-    def __init__(self, organizations_data):
+    def __init__(self, organizations_data, all_popolo):
         super(OrganizationCollection, self).__init__(
-            organizations_data, Organization)
+            organizations_data, Organization, all_popolo)
 
 
 class MembershipCollection(PopoloCollection):
 
-    def __init__(self, memberships_data):
+    def __init__(self, memberships_data, all_popolo):
         super(MembershipCollection, self).__init__(
-            memberships_data, Membership)
+            memberships_data, Membership, all_popolo)

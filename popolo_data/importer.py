@@ -23,12 +23,12 @@ class Popolo(object):
 
     @property
     def persons(self):
-        return PersonCollection(self.json_data.get('persons', []))
+        return PersonCollection(self.json_data.get('persons', []), self)
 
     @property
     def organizations(self):
-        return OrganizationCollection(self.json_data.get('organizations', []))
+        return OrganizationCollection(self.json_data.get('organizations', []), self)
 
     @property
     def memberships(self):
-        return MembershipCollection(self.json_data.get('memberships', []))
+        return MembershipCollection(self.json_data.get('memberships', []), self)
