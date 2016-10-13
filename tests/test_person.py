@@ -43,6 +43,7 @@ class TestPersons(TestCase):
             assert len(popolo.persons) == 1
             person = popolo.persons[0]
             assert person.name == 'Harry Truman'
+            assert person.name_at(date(2016, 1, 11)) == 'Harry Truman'
 
     def test_get_first_person(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
@@ -405,3 +406,75 @@ class TestPersons(TestCase):
                     'url': 'http://example.org/john-q-public'
                 }
             ]
+
+    def test_person_name_at_no_historic(self):
+        # I don't quite understand why this behaviour is desirable,
+        # but it's the logic of the Ruby version. TODO: check this.
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Bob",
+            "other_names": [
+                {
+                    "name": "Robert",
+                    "start_date": "2000-01-01"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.name_at(date(2016, 1, 11)) == 'Bob'
+
+    def test_person_name_at_historic(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Bob",
+            "other_names": [
+                {
+                    "name": "Robert",
+                    "start_date": "1989-01-01",
+                    "end_date": "1999-12-31"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.name_at(date(1990, 6, 1)) == 'Robert'
+
+    def test_person_multiple_names_at_one_date(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Bob",
+            "other_names": [
+                {
+                    "name": "Robert",
+                    "start_date": "1989-01-01",
+                    "end_date": "1999-12-31"
+                },
+                {
+                    "name": "Bobby",
+                    "start_date": "1989-01-01",
+                    "end_date": "2012-12-31"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            with pytest.raises(Exception) as excinfo:
+                person.name_at(date(1996, 1, 1))
+            assert str("Multiple names for <Person: Bob> found at date 1996-01-01") in \
+                str(excinfo)

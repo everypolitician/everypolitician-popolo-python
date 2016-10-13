@@ -11,6 +11,12 @@ class MultipleObjectsReturned(Exception):
     pass
 
 
+def _is_name_current_at(name_object, date_string):
+    start_range = name_object.get('start_date') or '0001-01-01'
+    end_range = name_object.get('end_date') or '9999-12-31'
+    return date_string >= start_range and date_string <= end_range
+
+
 class PopoloObject(object):
 
     def __init__(self, data):
@@ -172,6 +178,21 @@ class Person(PopoloObject):
         if six.PY2:
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
+
+    def name_at(self, particular_date):
+        historic_names = [n for n in self.other_names if n.get('end_date')]
+        if not historic_names:
+            return self.name
+        names_at_date = [
+            n for n in historic_names
+            if _is_name_current_at(n, str(particular_date))
+        ]
+        if not names_at_date:
+            return self.name
+        if len(names_at_date) > 1:
+            msg = "Multiple names for {0} found at date {1}"
+            raise Exception(msg.format(self, particular_date))
+        return names_at_date[0]['name']
 
     @property
     def links(self):
