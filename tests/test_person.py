@@ -143,7 +143,7 @@ class TestPersons(TestCase):
             assert person.twitter == \
                 'https://twitter.com/notarealtwitteraccountforharry'
 
-    def test_person_contact_detail_twitter(self):
+    def test_person_contact_detail_twitter_and_contact_details_list(self):
         with example_file(b'''
 {
     "persons": [
@@ -153,6 +153,10 @@ class TestPersons(TestCase):
                 {
                     "type": "twitter",
                     "value": "notarealtwitteraccountforharry"
+                },
+                {
+                    "type": "phone",
+                    "value": "555-5555"
                 }
             ]
         }
@@ -163,6 +167,16 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.twitter == \
                 'notarealtwitteraccountforharry'
+            assert person.contact_details == [
+                {
+                    "type": "twitter",
+                    "value": "notarealtwitteraccountforharry"
+                },
+                {
+                    "type": "phone",
+                    "value": "555-5555"
+                }
+            ]
 
     def test_sort_name(self):
         with example_file(b'''

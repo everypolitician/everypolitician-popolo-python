@@ -169,6 +169,10 @@ class Person(PopoloObject):
     def links(self):
         return self.get_related_object_list('links')
 
+    @property
+    def contact_details(self):
+        return self.get_related_object_list('contact_details')
+
 
 class Organization(PopoloObject):
 
