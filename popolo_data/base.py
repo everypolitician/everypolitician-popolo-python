@@ -216,6 +216,10 @@ class Organization(PopoloObject):
     def identifiers(self):
         return self.get_related_object_list('identifiers')
 
+    @property
+    def links(self):
+        return self.get_related_object_list('links')
+
 
 class Membership(PopoloObject):
 

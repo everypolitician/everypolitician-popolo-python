@@ -239,3 +239,39 @@ class TestOrganizations(TestCase):
                      'name': "Famous Joe's"
                  }
             ]
+
+    def test_organization_links_list(self):
+        with example_file(
+                b'''
+{
+    "organizations": [
+        {
+            "id": "starfleet",
+            "name": "Starfleet",
+            "links": [
+                {
+                    "url": "https://en.wikipedia.org/wiki/Starfleet",
+                    "note": "Wikipedia"
+                },
+                {
+                    "url": "http://memory-alpha.wikia.com/wiki/Starfleet",
+                    "note": "Memory Alpha"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.organizations) == 1
+            o = popolo.organizations[0]
+            assert o.links == [
+                {
+                    'url': 'https://en.wikipedia.org/wiki/Starfleet',
+                    'note': 'Wikipedia',
+                },
+                {
+                    'url': 'http://memory-alpha.wikia.com/wiki/Starfleet',
+                    'note': 'Memory Alpha',
+                },
+            ]
