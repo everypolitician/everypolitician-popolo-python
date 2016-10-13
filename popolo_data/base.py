@@ -181,6 +181,10 @@ class Person(PopoloObject):
     def contact_details(self):
         return self.get_related_object_list('contact_details')
 
+    @property
+    def identifiers(self):
+        return self.get_related_object_list('identifiers')
+
 
 class Organization(PopoloObject):
 

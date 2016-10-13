@@ -111,6 +111,12 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.wikidata == 'Q1343162'
             assert person.image == 'http://twin-peaks.example.org/harry.jpg'
+            assert person.identifiers == [
+                {
+                    'scheme': 'wikidata',
+                    'identifier': 'Q1343162'
+                }
+            ]
 
     def test_person_repr(self):
         with example_file(b'{"persons": [{"name": "Paul l\'Astnam\u00e9"}]}') as fname:
