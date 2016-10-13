@@ -198,6 +198,10 @@ class Organization(PopoloObject):
     def dissolution_date(self):
         return self.get_date('dissolution_date', None)
 
+    @property
+    def other_names(self):
+        return self.data.get('other_names', [])
+
     def __repr__(self):
         fmt = str('<Organization: {0}>')
         if six.PY2:

@@ -185,3 +185,46 @@ class TestOrganizations(TestCase):
         o = popolo.organizations.first
         assert o.founding_date == date(1950, 1, 20)
         assert o.dissolution_date == date(2000, 11, 15)
+
+    def test_organization_other_names(self):
+        with example_file(b'''
+{
+    "organizations": [
+        {
+             "id": "abc-inc",
+             "name": "ABC, Inc.",
+             "other_names": [
+                 {
+                     "name": "Bob's Diner",
+                     "start_date": "1950-01-01",
+                     "end_date": "1954-12-31"
+                 },
+                 {
+                     "name": "Joe's Diner",
+                     "start_date": "1955-01-01"
+                 },
+                 {
+                     "name": "Famous Joe's"
+                 }
+             ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.organizations) == 1
+            o = popolo.organizations[0]
+            assert o.other_names == [
+                {
+                    'name': "Bob's Diner",
+                    'start_date': '1950-01-01',
+                    'end_date': '1954-12-31'
+                 },
+                 {
+                     'name': "Joe's Diner",
+                     'start_date': '1955-01-01'
+                 },
+                 {
+                     'name': "Famous Joe's"
+                 }
+            ]
