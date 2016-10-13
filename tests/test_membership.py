@@ -48,6 +48,14 @@ class TestMemberships(TestCase):
             with pytest.raises(AttributeError):
                 m.name
 
+    def test_membership_has_person_id_and_organisation_id(self):
+        with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.memberships) == 1
+            m = popolo.memberships[0]
+            assert m.person_id == 'SP-937-215'
+            assert m.organization_id == 'starfleet'
+
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
             popolo = Popolo.from_filename(fname)
