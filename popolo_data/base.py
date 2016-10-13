@@ -22,6 +22,9 @@ class PopoloObject(object):
             return datetime.strptime(d, '%Y-%m-%d').date()
         return default
 
+    def get_related_object_list(self, popolo_array):
+        return self.data.get(popolo_array, [])
+
     def get_related_value(
             self, popolo_array, info_type_key, info_type, info_value_key):
         '''Get a value from one of the Popolo related objects
@@ -52,7 +55,8 @@ class PopoloObject(object):
             # => 'https://en.wikipedia.org/wiki/Dale_Cooper'
         '''
         matches = [
-            o[info_value_key] for o in self.data.get(popolo_array, [])
+            o[info_value_key]
+            for o in self.get_related_object_list(popolo_array)
             if o[info_type_key] == info_type]
         n = len(matches)
         if n == 0:
@@ -182,11 +186,27 @@ class Organization(PopoloObject):
     def classification(self):
         return self.data.get('classification')
 
+    @property
+    def image(self):
+        return self.data.get('image')
+
+    @property
+    def founding_date(self):
+        return self.get_date('founding_date', None)
+
+    @property
+    def dissolution_date(self):
+        return self.get_date('dissolution_date', None)
+
     def __repr__(self):
         fmt = str('<Organization: {0}>')
         if six.PY2:
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
+
+    @property
+    def identifiers(self):
+        return self.get_related_object_list('identifiers')
 
 
 class Membership(PopoloObject):

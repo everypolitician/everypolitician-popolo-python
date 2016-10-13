@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import date
 from unittest import TestCase
 
 import pytest
@@ -52,6 +53,42 @@ class TestOrganizations(TestCase):
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             assert o.wikidata == 'Q288523'
+
+    def test_identifiers_list(self):
+        with example_file(
+                b'''
+{
+    "organizations": [
+        {
+            "id": "starfleet",
+            "name": "Starfleet",
+            "identifiers": [
+                {
+                    "identifier": "Q288523",
+                    "scheme": "wikidata"
+                },
+                {
+                    "identifier": "123456",
+                    "scheme": "made-up-id"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.organizations) == 1
+            o = popolo.organizations[0]
+            assert o.identifiers == [
+                {
+                    'identifier': 'Q288523',
+                    'scheme': 'wikidata',
+                },
+                {
+                    'identifier': '123456',
+                    'scheme': 'made-up-id',
+                },
+            ]
 
     def test_classification_property(self):
         with example_file(
@@ -124,3 +161,27 @@ class TestOrganizations(TestCase):
                 assert repr(o) == b"<Organization: M\xc3\xa9decins Sans Fronti\xc3\xa8res>"
             else:
                 assert repr(o) == u"<Organization: Médecins Sans Frontières>"
+
+    def test_organization_image(self):
+        popolo = Popolo({
+            'organizations': [
+                {
+                    'name': 'ACME corporation',
+                    'image': 'http://example.org/acme.jpg',
+                }
+            ]})
+        o = popolo.organizations.first
+        assert o.image == 'http://example.org/acme.jpg'
+
+    def test_organization_founding_and_dissolution_dates(self):
+        popolo = Popolo({
+            'organizations': [
+                {
+                    'name': 'ACME corporation',
+                    'founding_date': '1950-01-20',
+                    'dissolution_date': '2000-11-15',
+                }
+            ]})
+        o = popolo.organizations.first
+        assert o.founding_date == date(1950, 1, 20)
+        assert o.dissolution_date == date(2000, 11, 15)
