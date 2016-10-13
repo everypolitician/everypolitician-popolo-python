@@ -258,7 +258,7 @@ class TestPersons(TestCase):
             assert person.phone == '9304832'
             assert person.fax == '9304833'
 
-    def test_person_facebook(self):
+    def test_person_facebook_and_links_list(self):
         with example_file(b'''
 {
     "persons": [
@@ -268,6 +268,10 @@ class TestPersons(TestCase):
                 {
                     "note": "facebook",
                     "url": "https://facebook.example.com/harry-s-truman"
+                },
+                {
+                    "note": "wikia",
+                    "url": "http://twinpeaks.wikia.com/wiki/Harry_S._Truman"
                 }
             ]
         }
@@ -278,3 +282,13 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.facebook == \
                 'https://facebook.example.com/harry-s-truman'
+            assert person.links == [
+                {
+                    "note": "facebook",
+                    "url": "https://facebook.example.com/harry-s-truman"
+                },
+                {
+                    "note": "wikia",
+                    "url": "http://twinpeaks.wikia.com/wiki/Harry_S._Truman"
+                }
+            ]

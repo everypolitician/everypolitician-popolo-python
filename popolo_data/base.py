@@ -165,6 +165,10 @@ class Person(PopoloObject):
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
 
+    @property
+    def links(self):
+        return self.get_related_object_list('links')
+
 
 class Organization(PopoloObject):
 
