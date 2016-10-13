@@ -316,3 +316,28 @@ class TestPersons(TestCase):
                     "url": "http://twinpeaks.wikia.com/wiki/Harry_S._Truman"
                 }
             ]
+
+    def test_person_images(self):
+        with example_file(u'''
+{
+    "persons": [
+        {
+            "name": "Бганба Валерий Рамшухович",
+            "images": [
+                {
+                    "url": "http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg"
+                },
+                {
+                    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Бганба_Валерий_Рамшухович.jpg"
+                }
+            ]
+        }
+    ]
+}
+'''.encode('utf-8')) as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.images == [
+                {'url': 'http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg'},
+                {'url': u'https://upload.wikimedia.org/wikipedia/commons/a/a3/\u0411\u0433\u0430\u043d\u0431\u0430_\u0412\u0430\u043b\u0435\u0440\u0438\u0439_\u0420\u0430\u043c\u0448\u0443\u0445\u043e\u0432\u0438\u0447.jpg'}
+            ]
