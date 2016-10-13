@@ -173,6 +173,17 @@ class TestOrganizations(TestCase):
         o = popolo.organizations.first
         assert o.image == 'http://example.org/acme.jpg'
 
+    def test_organization_seats(self):
+        popolo = Popolo({
+            'organizations': [
+                {
+                    'name': 'House of Commons',
+                    'seats': 650,
+                }
+            ]})
+        o = popolo.organizations.first
+        assert o.seats == 650
+
     def test_organization_founding_and_dissolution_dates(self):
         popolo = Popolo({
             'organizations': [

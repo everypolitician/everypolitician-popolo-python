@@ -199,6 +199,10 @@ class Organization(PopoloObject):
         return self.get_date('dissolution_date', None)
 
     @property
+    def seats(self):
+        return self.data.get('seats')
+
+    @property
     def other_names(self):
         return self.data.get('other_names', [])
 
