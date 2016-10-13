@@ -2,7 +2,7 @@ WARNING: this is a pre-release version of this module - use at your own risk
 ============================================================================
 
 This is a port of the Ruby gem `everypolitician-popolo
-<https://github.com/everypolitician/everypolitician-popolo>` to
+<https://github.com/everypolitician/everypolitician-popolo>`__ to
 Python.  Even this README is strongly based on that that gem.
 
 
@@ -19,14 +19,16 @@ You can install this package with:
 Usage
 -----
 
-You can download a Popolo file manually from
-`EveryPolitician <http://everypolitician.org/>`__.
+You can download a Popolo file manually from `EveryPolitician
+<http://everypolitician.org/>`__ (although there's another
+library if you want to automate that:
+`See also: the everypolitician package`_).
 
 The following example uses `Åland Lagting
 <https://github.com/everypolitician/everypolitician-data/raw/master/data/Aland/Lagting/ep-popolo-v1.0.json>`__
 (which is the legislature of the Åland islands, available as
 JSON data from the `EveryPolitician page for Åland
-<http://everypolitician.org/aland/>`__).
+<http://everypolitician.org/aland/>`__). You can
 
 First you'll need to require the library and read in a file from disk.
 
@@ -81,6 +83,7 @@ attributes:
         #     <Organization: Åländsk Demokrati>,
         #     <Organization: Åländsk center>]
 
+
 Development
 -----------
 
@@ -100,6 +103,37 @@ You can then run the tests with:
 To release a new version, update the version number in
 ``setup.py`` and add notes to the ``CHANGES.txt`` describing
 the fixes or new features.
+
+
+See also: the everypolitician package
+-------------------------------------
+
+In the example above, the Popolo data comes from a downloaded
+file (``ep-popolo-v1.0.json``), which is the kind of file you
+can get from the `EveryPolitician website
+<http://everypolitician.org/>`__. But your Ruby application can
+also interact directly with the EveryPolitician data using the
+`everypolitician package
+<https://github.com/everypolitician/everypolitician-python>`__,
+so you don't need to handle JSON files at all. The value
+returned from the ``Legislature.popolo`` method is a ``Popolo``
+object, which you can use as above.  For example, you can
+install the package with:
+
+.. code:: bash
+
+    pip install everypolitician
+
+And then use it as follows:
+
+.. code:: python
+
+    from everypolitician import EveryPolitician
+
+    australia = EveryPolitician().country('Australia')
+    australia.code # => u'AU'
+    senate = australia.legislature('Senate')
+    senate.popolo().persons.get(name='Aden Ridgeway') # => <Person: Aden Ridgeway>
 
 
 Contributing
