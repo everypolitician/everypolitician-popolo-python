@@ -1,3 +1,4 @@
+from mock import patch, Mock
 from unittest import TestCase
 
 import pytest
@@ -18,3 +19,13 @@ class TestLoading(TestCase):
         with pytest.raises(IOError) as excinfo:
             Popolo.from_filename('non-existent-file.json')
         assert 'No such file or directory' in text_type(excinfo)
+
+    @patch('popolo_data.importer.requests.get')
+    def test_create_from_url(self, faked_get):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'persons': [{'name': 'Joe Bloggs'}]
+        }
+        faked_get.side_effect = lambda url: mock_response
+        popolo = Popolo.from_url('http://example.org/popolo.json')
+        assert popolo.persons.first.name == 'Joe Bloggs'
