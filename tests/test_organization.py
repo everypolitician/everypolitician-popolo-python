@@ -15,7 +15,7 @@ class TestOrganizations(TestCase):
 
     def test_empty_file_gives_no_organizations(self):
         with example_file(b'{}') as filename:
-            popolo = Popolo(filename)
+            popolo = Popolo.from_filename(filename)
             assert len(popolo.organizations) == 0
 
     def test_single_organization_name(self):
@@ -25,7 +25,7 @@ class TestOrganizations(TestCase):
     "organizations": [{"name": "Starfleet"}]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             assert o.name == 'Starfleet'
@@ -48,7 +48,7 @@ class TestOrganizations(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             assert o.wikidata == 'Q288523'
@@ -66,7 +66,7 @@ class TestOrganizations(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             assert o.classification == 'military'
@@ -82,7 +82,7 @@ class TestOrganizations(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations.first
             assert o.wikidata is None
@@ -109,7 +109,7 @@ class TestOrganizations(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             with pytest.raises(MultipleObjectsReturned):
@@ -117,7 +117,7 @@ class TestOrganizations(TestCase):
 
     def test_organization_repr(self):
         with example_file(b'{"organizations": [{"name": "M\u00e9decins Sans Fronti\u00e8res"}]}') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             if six.PY2:

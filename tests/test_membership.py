@@ -37,12 +37,12 @@ class TestMemberships(TestCase):
 
     def test_empty_file_gives_no_memberships(self):
         with example_file(b'{}') as filename:
-            popolo = Popolo(filename)
+            popolo = Popolo.from_filename(filename)
             assert len(popolo.memberships) == 0
 
     def test_membership_should_not_have_name(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.memberships) == 1
             m = popolo.memberships[0]
             with pytest.raises(AttributeError):
@@ -50,13 +50,13 @@ class TestMemberships(TestCase):
 
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.memberships) == 1
             m = popolo.memberships[0]
             assert m.start_date == date(2327, 12, 1)
 
     def test_get_sentinel_end_date_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             m = popolo.memberships[0]
             assert m.end_date >= date(2500, 1, 1)

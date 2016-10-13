@@ -6,9 +6,13 @@ from .base import (
 
 class Popolo(object):
 
-    def __init__(self, filename):
+    @classmethod
+    def from_filename(cls, filename):
         with open(filename) as f:
-            self.json_data = json.load(f)
+            return cls(json.load(f))
+
+    def __init__(self, json_data):
+        self.json_data = json_data
 
     @property
     def persons(self):

@@ -34,19 +34,19 @@ class TestPersons(TestCase):
 
     def test_empty_file_gives_no_people(self):
         with example_file(b'{}') as filename:
-            popolo = Popolo(filename)
+            popolo = Popolo.from_filename(filename)
             assert len(popolo.persons) == 0
 
     def test_single_person_name(self):
         with example_file(b'{"persons": [{"name": "Harry Truman"}]}') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.persons) == 1
             person = popolo.persons[0]
             assert person.name == 'Harry Truman'
 
     def test_get_first_person(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.persons) == 2
             person = popolo.persons.first
             assert person.name == 'Norma Jennings'
@@ -54,37 +54,37 @@ class TestPersons(TestCase):
 
     def test_first_from_empty_file_returns_none(self):
         with example_file(b'{}') as filename:
-            popolo = Popolo(filename)
+            popolo = Popolo.from_filename(filename)
             assert popolo.persons.first == None
 
     def test_filter_of_people_none_matching(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             matches = popolo.persons.filter(name='Dennis the Menace')
             assert len(matches) == 0
 
     def test_filter_of_people_one_matching(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             matches = popolo.persons.filter(name='Harry Truman')
             assert len(matches) == 1
             assert matches[0].name == 'Harry Truman'
 
     def test_get_of_people_none_matching(self):
         with example_file(b'{}') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             with pytest.raises(Person.DoesNotExist):
                 popolo.persons.get(name='Harry Truman')
 
     def test_get_of_people_multiple_matches(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             with pytest.raises(Person.MultipleObjectsReturned):
                 popolo.persons.get(national_identity='American')
 
     def test_get_of_people_one_matching(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.get(name='Harry Truman')
             assert person.id == '2'
 
@@ -107,14 +107,14 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.wikidata == 'Q1343162'
             assert person.image == 'http://twin-peaks.example.org/harry.jpg'
 
     def test_person_repr(self):
         with example_file(b'{"persons": [{"name": "Paul l\'Astnam\u00e9"}]}') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             assert len(popolo.persons) == 1
             person = popolo.persons[0]
             if six.PY2:
@@ -138,7 +138,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.twitter == \
                 'https://twitter.com/notarealtwitteraccountforharry'
@@ -159,7 +159,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.twitter == \
                 'notarealtwitteraccountforharry'
@@ -175,7 +175,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.sort_name == 'Truman'
 
@@ -196,7 +196,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.name == "Harry Truman"
             assert person.email == "harry@example.org"
@@ -217,7 +217,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.birth_date is None
             assert person.death_date is None
@@ -234,7 +234,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.birth_date == date(1946, 1, 24)
             assert person.death_date == date(2099, 12, 31)
@@ -253,7 +253,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.phone == '9304832'
             assert person.fax == '9304833'
@@ -274,7 +274,7 @@ class TestPersons(TestCase):
     ]
 }
 ''') as fname:
-            popolo = Popolo(fname)
+            popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.facebook == \
                 'https://facebook.example.com/harry-s-truman'

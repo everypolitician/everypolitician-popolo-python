@@ -33,7 +33,7 @@ First you'll need to require the library and read in a file from disk.
 .. code:: python
 
     from popolo_data.importer import Popolo
-    popolo = Popolo('ep-popolo-v1.0.json')
+    popolo = Popolo.from_filename('ep-popolo-v1.0.json')
 
 All Popolo classes used by EveryPolitician are implemented:
 
