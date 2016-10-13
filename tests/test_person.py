@@ -341,3 +341,41 @@ class TestPersons(TestCase):
                 {'url': 'http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg'},
                 {'url': u'https://upload.wikimedia.org/wikipedia/commons/a/a3/\u0411\u0433\u0430\u043d\u0431\u0430_\u0412\u0430\u043b\u0435\u0440\u0438\u0439_\u0420\u0430\u043c\u0448\u0443\u0445\u043e\u0432\u0438\u0447.jpg'}
             ]
+
+    def test_person_other_names(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "id": "john-q-public",
+            "name": "Mr. John Q. Public, Esq.",
+            "other_names": [
+                {
+                    "name": "Mr. Ziggy Q. Public, Esq.",
+                    "start_date": "1920-01",
+                    "end_date": "1949-12-31",
+                    "note": "Birth name"
+                },
+                {
+                    "name": "Dragonsbane",
+                    "note": "LARP character name"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.other_names == [
+                {
+                    'end_date': '1949-12-31',
+                    'name': 'Mr. Ziggy Q. Public, Esq.',
+                    'note': 'Birth name',
+                    'start_date': '1920-01'
+                },
+                {
+                    "name": "Dragonsbane",
+                    "note": "LARP character name"
+                }
+            ]

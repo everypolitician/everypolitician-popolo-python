@@ -189,6 +189,10 @@ class Person(PopoloObject):
     def images(self):
         return self.get_related_object_list('images')
 
+    @property
+    def other_names(self):
+        return self.get_related_object_list('other_names')
+
 
 class Organization(PopoloObject):
 
