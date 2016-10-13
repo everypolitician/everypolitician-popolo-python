@@ -13,7 +13,7 @@ EXAMPLE_SINGLE_MEMBERSHIP = b'''
     "persons": [
         {
             "id": "SP-937-215",
-            "name:": "Jean-Luc Picard"
+            "name": "Jean-Luc Picard"
         }
     ],
     "organizations": [
