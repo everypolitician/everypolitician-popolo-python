@@ -379,3 +379,29 @@ class TestPersons(TestCase):
                     "note": "LARP character name"
                 }
             ]
+
+    def test_person_sources(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "id": "john-q-public",
+            "name": "Mr. John Q. Public, Esq.",
+            "sources": [
+                {
+                    "note": "His homepage",
+                    "url": "http://example.org/john-q-public"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.sources == [
+                {
+                    'note': 'His homepage',
+                    'url': 'http://example.org/john-q-public'
+                }
+            ]
