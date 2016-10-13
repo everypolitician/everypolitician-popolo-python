@@ -205,7 +205,9 @@ class TestPersons(TestCase):
             "honorific_prefix": "Sheriff",
             "honorific_suffix": "Bookhouse Boy",
             "biography": "Harry S. Truman is the sheriff of Twin Peaks",
-            "summary": "He assists Dale Cooper in the Laura Palmer case"
+            "summary": "He assists Dale Cooper in the Laura Palmer case",
+            "given_name": "Harry",
+            "family_name": "Truman"
         }
     ]
 }
@@ -220,6 +222,8 @@ class TestPersons(TestCase):
             assert person.honorific_suffix == "Bookhouse Boy"
             assert person.biography == "Harry S. Truman is the sheriff of Twin Peaks"
             assert person.summary == "He assists Dale Cooper in the Laura Palmer case"
+            assert person.given_name == "Harry"
+            assert person.family_name == "Truman"
 
     def test_missing_birth_and_death_dates(self):
         with example_file(b'''

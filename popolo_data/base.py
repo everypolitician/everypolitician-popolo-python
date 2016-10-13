@@ -140,6 +140,14 @@ class Person(PopoloObject):
         return self.get_date('death_date', None)
 
     @property
+    def family_name(self):
+        return self.data.get('family_name')
+
+    @property
+    def given_name(self):
+        return self.data.get('given_name')
+
+    @property
     def wikidata(self):
         return self.identifier('wikidata')
 
