@@ -219,6 +219,12 @@ class Person(PopoloObject):
     def sources(self):
         return self.get_related_object_list('sources')
 
+    @property
+    def memberships(self):
+        return [
+            m for m in self.all_popolo.memberships
+            if m.person_id == self.id
+        ]
 
 class Organization(PopoloObject):
 

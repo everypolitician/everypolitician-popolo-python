@@ -163,3 +163,59 @@ class TestMemberships(TestCase):
             m_b = popolo_b.memberships[0]
             assert m_a == m_b
             assert not (m_a != m_b)
+
+
+EXAMPLE_MULTIPLE_MEMBERSHIPS = b'''
+{
+    "persons": [
+        {
+            "id": "SP-937-215",
+            "name": "Jean-Luc Picard"
+        },
+        {
+            "id": "SC-231-427",
+            "name": "William Riker"
+        }
+    ],
+    "organizations": [
+        {
+            "id": "starfleet",
+            "name": "Starfleet"
+        },
+        {
+            "id": "gardening-club",
+            "name": "Boothby's Gardening Club"
+        }
+    ],
+    "memberships": [
+        {
+            "person_id": "SP-937-215",
+            "organization_id": "starfleet",
+            "start_date": "2327-12-01"
+        },
+        {
+            "person_id": "SP-937-215",
+            "organization_id": "gardening-club",
+            "start_date": "2323-01-01",
+            "end_date": "2327-11-31"
+        },
+        {
+            "person_id": "SC-231-427",
+            "organization_id": "starfleet",
+            "start_date": "2357-03-08"
+        }
+    ]
+}
+'''
+
+
+class TestPersonMemberships(TestCase):
+
+    def test_person_memberships_method(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            person_memberships = person.memberships
+            assert len(person_memberships) == 2
+            assert popolo.memberships[0] == person_memberships[0]
+            assert popolo.memberships[1] == person_memberships[1]
