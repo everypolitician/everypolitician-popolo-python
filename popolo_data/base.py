@@ -284,6 +284,10 @@ class Membership(PopoloObject):
         pass
 
     @property
+    def role(self):
+        return self.data.get('role')
+
+    @property
     def person_id(self):
         return self.data.get('person_id')
 

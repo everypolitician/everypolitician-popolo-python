@@ -27,6 +27,7 @@ EXAMPLE_SINGLE_MEMBERSHIP = b'''
         {
             "person_id": "SP-937-215",
             "organization_id": "starfleet",
+            "role": "student",
             "start_date": "2327-12-01"
         }
     ]
@@ -56,6 +57,13 @@ class TestMemberships(TestCase):
             m = popolo.memberships[0]
             assert m.person_id == 'SP-937-215'
             assert m.organization_id == 'starfleet'
+
+    def test_membership_has_role(self):
+        with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.memberships) == 1
+            m = popolo.memberships[0]
+            assert m.role == 'student'
 
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
