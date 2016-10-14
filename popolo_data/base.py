@@ -330,6 +330,10 @@ class Membership(PopoloObject):
         return self.data.get('organization_id')
 
     @property
+    def organization(self):
+        return self.all_popolo.organizations.get(id=self.organization_id)
+
+    @property
     def area_id(self):
         return self.data.get('area_id')
 
@@ -340,6 +344,10 @@ class Membership(PopoloObject):
     @property
     def on_behalf_of_id(self):
         return self.data.get('on_behalf_of_id')
+
+    @property
+    def on_behalf_of(self):
+        return self.all_popolo.organizations.get(id=self.on_behalf_of_id)
 
     @property
     def post_id(self):

@@ -226,3 +226,17 @@ class TestPersonMemberships(TestCase):
             person_picard = popolo.persons[0]
             m = popolo.memberships[0]
             assert m.person == person_picard
+
+    def test_membership_organization_method(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            org_starfleet = popolo.organizations.first
+            m = popolo.memberships[0]
+            assert m.organization == org_starfleet
+
+    def test_membership_on_behalf_of_method(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            org_adder_party = popolo.organizations[1]
+            m = popolo.memberships[0]
+            assert m.on_behalf_of == org_adder_party
