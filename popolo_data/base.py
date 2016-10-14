@@ -323,6 +323,17 @@ class Membership(PopoloObject):
         fmt = str("<Membership: '{0}' at '{1}'>")
         return fmt.format(self.person_id, self.organization_id)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.data == other.data
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.data != other.data
+        return NotImplemented
+
+
 class PopoloCollection(object):
 
     def __init__(self, data_list, object_class, all_popolo):

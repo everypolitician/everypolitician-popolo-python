@@ -150,3 +150,16 @@ class TestMemberships(TestCase):
             assert len(popolo.memberships) == 1
             m = popolo.memberships[0]
             assert repr(m) == "<Membership: 'SP-937-215' at 'starfleet'>"
+
+    def test_equality_of_memberships(self):
+        with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
+            # Create the same membership via two Popolo objects - they
+            # should still be equal.
+            popolo_a = Popolo.from_filename(fname)
+            assert len(popolo_a.memberships) == 1
+            m_a = popolo_a.memberships[0]
+            popolo_b = Popolo.from_filename(fname)
+            assert len(popolo_b.memberships) == 1
+            m_b = popolo_b.memberships[0]
+            assert m_a == m_b
+            assert not (m_a != m_b)
