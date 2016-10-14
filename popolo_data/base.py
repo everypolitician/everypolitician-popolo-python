@@ -299,6 +299,9 @@ class Membership(PopoloObject):
     def end_date(self):
         return self.get_date('end_date', date(9999, 12, 31))
 
+    def __repr__(self):
+        fmt = str("<Membership: '{0}' at '{1}'>")
+        return fmt.format(self.person_id, self.organization_id)
 
 class PopoloCollection(object):
 

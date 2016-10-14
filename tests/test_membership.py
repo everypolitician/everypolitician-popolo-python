@@ -2,6 +2,7 @@ from datetime import date
 from unittest import TestCase
 
 import pytest
+import six
 
 from .helpers import example_file
 
@@ -68,3 +69,10 @@ class TestMemberships(TestCase):
             popolo = Popolo.from_filename(fname)
             m = popolo.memberships[0]
             assert m.end_date >= date(2500, 1, 1)
+
+    def test_organization_repr(self):
+        with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.memberships) == 1
+            m = popolo.memberships[0]
+            assert repr(m) == "<Membership: 'SP-937-215' at 'starfleet'>"
