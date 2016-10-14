@@ -128,6 +128,7 @@ class TestMemberships(TestCase):
             m = popolo.memberships[0]
             assert m.area_id == 'dunny-on-the-wold'
             assert m.on_behalf_of_id == 'adder'
+            assert m.legislative_period_id == 'pitt'
 
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
