@@ -296,6 +296,10 @@ class Membership(PopoloObject):
         return self.data.get('organization_id')
 
     @property
+    def area_id(self):
+        return self.data.get('area_id')
+
+    @property
     def start_date(self):
         return self.get_date('start_date', date(1, 1, 1))
 

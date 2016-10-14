@@ -34,6 +34,62 @@ EXAMPLE_SINGLE_MEMBERSHIP = b'''
 }
 '''
 
+EXAMPLE_MEMBERSHIP_ALL_FIELDS = b'''
+{
+    "areas": [
+        {
+            "id": "dunny-on-the-wold",
+            "name": "Dunny-on-the-Wold"
+        }
+    ],
+    "events": [
+        {
+            "classification": "legislative period",
+            "id": "pitt",
+            "name": "Parliamentary Period",
+            "start_date": "1783-12-19",
+            "end_date": "1801-01-01"
+        }
+    ],
+    "persons": [
+        {
+            "id": "1234",
+            "name": "Edmund Blackadder"
+        }
+    ],
+    "posts": [
+        {
+            "id": "dunny-on-the-wold-seat",
+            "label": "Member of Parliament for Dunny-on-the-Wold"
+        }
+    ],
+    "organizations": [
+        {
+            "id": "commons",
+            "name": "House of Commons"
+        },
+        {
+            "id": "adder",
+            "name": "Adder Party",
+            "classification": "party"
+        }
+    ],
+    "memberships": [
+        {
+            "area_id": "dunny-on-the-wold",
+            "end_date": "1784-05-23",
+            "legislative_period_id": "pitt",
+            "on_behalf_of_id": "adder",
+            "organization_id": "commons",
+            "person_id": "1234",
+            "post_id": "dunny-on-the-wold-seat",
+            "role": "candidates",
+            "start_date": "1784-03-01"
+        }
+    ]
+}
+'''
+
 
 class TestMemberships(TestCase):
 
@@ -64,6 +120,13 @@ class TestMemberships(TestCase):
             assert len(popolo.memberships) == 1
             m = popolo.memberships[0]
             assert m.role == 'student'
+
+    def test_membership_foreign_keys(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.memberships) == 1
+            m = popolo.memberships[0]
+            assert m.area_id == 'dunny-on-the-wold'
 
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
