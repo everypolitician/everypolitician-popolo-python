@@ -53,6 +53,17 @@ class TestPersons(TestCase):
             assert person.name == 'Norma Jennings'
             assert person.id == "1"
 
+    def test_person_equality_and_inequality(self):
+        with example_file(EXAMPLE_TWO_PEOPLE) as fname:
+            person_norma_a = Popolo.from_filename(fname).persons[0]
+            person_norma_b = Popolo.from_filename(fname).persons[0]
+            person_harry = Popolo.from_filename(fname).persons[1]
+            assert person_norma_a == person_norma_b
+            assert not (person_norma_a != person_norma_b)
+            assert person_harry == person_harry
+            assert not (person_norma_a == person_harry)
+            assert person_norma_a != person_harry
+
     def test_first_from_empty_file_returns_none(self):
         with example_file(b'{}') as filename:
             popolo = Popolo.from_filename(filename)

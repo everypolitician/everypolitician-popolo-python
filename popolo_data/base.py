@@ -180,6 +180,16 @@ class Person(PopoloObject):
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
     def name_at(self, particular_date):
         historic_names = [n for n in self.other_names if n.get('end_date')]
         if not historic_names:
