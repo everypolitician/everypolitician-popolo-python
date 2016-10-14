@@ -127,6 +127,7 @@ class TestMemberships(TestCase):
             assert len(popolo.memberships) == 1
             m = popolo.memberships[0]
             assert m.area_id == 'dunny-on-the-wold'
+            assert m.on_behalf_of_id == 'adder'
 
     def test_get_organization_from_membership(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
