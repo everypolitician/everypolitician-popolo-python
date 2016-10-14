@@ -235,6 +235,10 @@ class Organization(PopoloObject):
         pass
 
     @property
+    def id(self):
+        return self.data.get('id')
+
+    @property
     def name(self):
         return self.data.get('name')
 

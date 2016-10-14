@@ -31,7 +31,7 @@ class TestOrganizations(TestCase):
             o = popolo.organizations[0]
             assert o.name == 'Starfleet'
 
-    def test_wikidata_property(self):
+    def test_wikidata_property_and_id(self):
         with example_file(
                 b'''
 {
@@ -53,6 +53,7 @@ class TestOrganizations(TestCase):
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             assert o.wikidata == 'Q288523'
+            assert o.id == 'starfleet'
 
     def test_identifiers_list(self):
         with example_file(
