@@ -276,6 +276,16 @@ class Organization(PopoloObject):
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
     @property
     def identifiers(self):
         return self.get_related_object_list('identifiers')

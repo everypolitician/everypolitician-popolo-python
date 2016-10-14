@@ -276,3 +276,26 @@ class TestOrganizations(TestCase):
                     'note': 'Memory Alpha',
                 },
             ]
+
+    def test_organisation_equality(self):
+        with example_file(
+                b'''
+{
+    "organizations": [
+        {
+            "id": "starfleet",
+            "name": "Starfleet",
+            "identifiers": [
+                {
+                    "identifier": "Q288523",
+                    "scheme": "wikidata"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            o_a = Popolo.from_filename(fname).organizations[0]
+            o_b = Popolo.from_filename(fname).organizations[0]
+            assert o_a == o_b
+            assert not (o_a != o_b)
