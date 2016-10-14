@@ -219,3 +219,10 @@ class TestPersonMemberships(TestCase):
             assert len(person_memberships) == 2
             assert popolo.memberships[0] == person_memberships[0]
             assert popolo.memberships[1] == person_memberships[1]
+
+    def test_membership_person_method(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            person_picard = popolo.persons[0]
+            m = popolo.memberships[0]
+            assert m.person == person_picard

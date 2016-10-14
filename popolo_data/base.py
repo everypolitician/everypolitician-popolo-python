@@ -322,6 +322,10 @@ class Membership(PopoloObject):
         return self.data.get('person_id')
 
     @property
+    def person(self):
+        return self.all_popolo.persons.get(id=self.person_id)
+
+    @property
     def organization_id(self):
         return self.data.get('organization_id')
 
