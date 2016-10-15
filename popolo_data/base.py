@@ -338,6 +338,10 @@ class Membership(PopoloObject):
         return self.data.get('area_id')
 
     @property
+    def area(self):
+        return self.all_popolo.areas.get(id=self.area_id)
+
+    @property
     def legislative_period_id(self):
         return self.data.get('legislative_period_id')
 

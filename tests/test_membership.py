@@ -240,3 +240,10 @@ class TestPersonMemberships(TestCase):
             org_adder_party = popolo.organizations[1]
             m = popolo.memberships[0]
             assert m.on_behalf_of == org_adder_party
+
+    def test_membership_area_method(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            area_dunny = popolo.areas[0]
+            m = popolo.memberships[0]
+            assert m.area == area_dunny
