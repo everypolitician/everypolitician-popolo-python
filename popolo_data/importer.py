@@ -3,7 +3,7 @@ import json
 import requests
 
 from .base import (
-    AreaCollection, MembershipCollection, PersonCollection,
+    AreaCollection, EventCollection, MembershipCollection, PersonCollection,
     OrganizationCollection, PostCollection)
 
 
@@ -41,3 +41,7 @@ class Popolo(object):
     @property
     def posts(self):
         return PostCollection(self.json_data.get('posts', []), self)
+
+    @property
+    def events(self):
+        return EventCollection(self.json_data.get('events', []), self)

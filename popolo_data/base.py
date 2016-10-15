@@ -458,6 +458,55 @@ class Post(PopoloObject):
         return NotImplemented
 
 
+class Event(PopoloObject):
+
+    @property
+    def id(self):
+        return self.data.get('id')
+
+    @property
+    def name(self):
+        return self.data.get('name')
+
+    @property
+    def classification(self):
+        return self.data.get('classification')
+
+    @property
+    def start_date(self):
+        return self.get_date('start_date', date(1, 1, 1))
+
+    @property
+    def end_date(self):
+        return self.get_date('end_date', date(9999, 12, 31))
+
+    @property
+    def organization_id(self):
+        return self.data.get('organization_id')
+
+    @property
+    def organization(self):
+        return self.all_popolo.organizations.get(id=self.organization_id)
+
+    def __repr__(self):
+        fmt = str("<Event: {0}>")
+        return fmt.format(self.name)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
+    @property
+    def identifiers(self):
+        return self.get_related_object_list('identifiers')
+
+
 class PopoloCollection(object):
 
     def __init__(self, data_list, object_class, all_popolo):
@@ -530,3 +579,10 @@ class PostCollection(PopoloCollection):
     def __init__(self, posts_data, all_popolo):
         super(PostCollection, self).__init__(
             posts_data, Post, all_popolo)
+
+
+class EventCollection(PopoloCollection):
+
+    def __init__(self, events_data, all_popolo):
+        super(EventCollection, self).__init__(
+            events_data, Event, all_popolo)
