@@ -72,3 +72,12 @@ class TestPosts(TestCase):
             national_assembly = popolo.organizations.first
             nom_rep = popolo.posts.first
             assert nom_rep.organization == national_assembly
+
+    def test_area_repr(self):
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            post = popolo.posts.first
+            if six.PY2:
+                assert repr(post) == b"<Post: Nominated Representative>"
+            else:
+                assert repr(post) == u"<Post: Nominated Representative>"

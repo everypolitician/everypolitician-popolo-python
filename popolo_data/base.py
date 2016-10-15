@@ -439,6 +439,10 @@ class Post(PopoloObject):
     def organization(self):
         return self.all_popolo.organizations.get(id=self.organization_id)
 
+    def __repr__(self):
+        fmt = str("<Post: {0}>")
+        return fmt.format(self.label)
+
 
 class PopoloCollection(object):
 
