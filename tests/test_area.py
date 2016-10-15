@@ -61,3 +61,24 @@ class TestAreas(TestCase):
                 "scheme": "wikidata"
             }
         ]
+
+    def test_area_other_names(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        assert area.other_names == [
+            {
+                "lang": "fr",
+                "name": "Dixième circonscription législative d'Estonie",
+                "note": "multilingual"
+            },
+            {
+                "lang": "et",
+                "name": "Valimisringkond nr 10",
+                "note": "multilingual"
+            },
+            {
+                "lang": "en",
+                "name": "Electoral District 10 (Tartu)",
+                "note": "multilingual"
+            }
+        ]
