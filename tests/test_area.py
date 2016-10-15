@@ -2,6 +2,8 @@
 
 from unittest import TestCase
 
+import six
+
 from popolo_data.importer import Popolo
 
 
@@ -92,3 +94,19 @@ class TestAreas(TestCase):
         popolo = Popolo({"areas": [EXAMPLE_AREA]})
         area = popolo.areas[0]
         assert area.wikidata == 'Q3032626'
+
+    def test_area_repr(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        if six.PY2:
+            assert repr(area) == b"<Area: Tartu linn>"
+        else:
+            assert repr(area) == u"<Area: Tartu linn>"
+
+    def test_area_identity_equality_and_inequality(self):
+        popolo_a = Popolo({"areas": [EXAMPLE_AREA]})
+        area_a = popolo_a.areas[0]
+        popolo_b = Popolo({"areas": [EXAMPLE_AREA]})
+        area_b = popolo_b.areas[0]
+        assert area_a == area_b
+        assert not (area_a != area_b)

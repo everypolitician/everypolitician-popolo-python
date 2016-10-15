@@ -402,6 +402,20 @@ class Area(PopoloObject):
     def wikidata(self):
         return self.identifier('wikidata')
 
+    def __repr__(self):
+        fmt = str("<Area: {0}>")
+        return fmt.format(self.name)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
 
 class PopoloCollection(object):
 
