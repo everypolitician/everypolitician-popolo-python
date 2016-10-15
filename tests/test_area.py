@@ -82,3 +82,8 @@ class TestAreas(TestCase):
                 "note": "multilingual"
             }
         ]
+
+    def test_area_wikidata(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        assert area.wikidata == 'Q3032626'

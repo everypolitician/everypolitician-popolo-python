@@ -394,6 +394,10 @@ class Area(PopoloObject):
     def other_names(self):
         return self.get_related_object_list('other_names')
 
+    @property
+    def wikidata(self):
+        return self.identifier('wikidata')
+
 
 class PopoloCollection(object):
 
