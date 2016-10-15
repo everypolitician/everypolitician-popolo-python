@@ -46,3 +46,8 @@ class TestAreas(TestCase):
         assert len(popolo.areas) == 1
         area = popolo.areas[0]
         assert area.name == 'Tartu linn'
+
+    def test_area_type(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        assert area.type == 'constituency'
