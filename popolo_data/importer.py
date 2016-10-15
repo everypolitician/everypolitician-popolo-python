@@ -4,7 +4,7 @@ import requests
 
 from .base import (
     AreaCollection, MembershipCollection, PersonCollection,
-    OrganizationCollection)
+    OrganizationCollection, PostCollection)
 
 
 class Popolo(object):
@@ -37,3 +37,7 @@ class Popolo(object):
     @property
     def areas(self):
         return AreaCollection(self.json_data.get('areas', []), self)
+
+    @property
+    def posts(self):
+        return PostCollection(self.json_data.get('posts', []), self)

@@ -421,6 +421,13 @@ class Area(PopoloObject):
         return NotImplemented
 
 
+class Post(PopoloObject):
+
+    @property
+    def label(self):
+        return self.data.get('label')
+
+
 class PopoloCollection(object):
 
     def __init__(self, data_list, object_class, all_popolo):
@@ -480,8 +487,16 @@ class MembershipCollection(PopoloCollection):
         super(MembershipCollection, self).__init__(
             memberships_data, Membership, all_popolo)
 
+
 class AreaCollection(PopoloCollection):
 
     def __init__(self, areas_data, all_popolo):
         super(AreaCollection, self).__init__(
             areas_data, Area, all_popolo)
+
+
+class PostCollection(PopoloCollection):
+
+    def __init__(self, posts_data, all_popolo):
+        super(PostCollection, self).__init__(
+            posts_data, Post, all_popolo)
