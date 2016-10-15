@@ -38,3 +38,10 @@ class TestPosts(TestCase):
             assert len(popolo.posts) == 2
             post = popolo.posts[0]
             assert post.label == 'Nominated Representative'
+
+    def test_post_has_organization_id(self):
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.posts) == 2
+            post = popolo.posts[0]
+            assert post.organization_id == '574eff8e-8171-4f2b-8279-60ed8dec1a2a'

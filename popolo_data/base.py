@@ -427,6 +427,10 @@ class Post(PopoloObject):
     def label(self):
         return self.data.get('label')
 
+    @property
+    def organization_id(self):
+        return self.data.get('organization_id')
+
 
 class PopoloCollection(object):
 
