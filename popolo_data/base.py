@@ -358,6 +358,10 @@ class Membership(PopoloObject):
         return self.data.get('post_id')
 
     @property
+    def post(self):
+        return self.all_popolo.posts.get(id=self.post_id)
+
+    @property
     def start_date(self):
         return self.get_date('start_date', date(1, 1, 1))
 

@@ -247,3 +247,10 @@ class TestPersonMemberships(TestCase):
             area_dunny = popolo.areas[0]
             m = popolo.memberships[0]
             assert m.area == area_dunny
+
+    def test_membership_post_method(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            post_dunny = popolo.posts[0]
+            m = popolo.memberships[0]
+            assert m.post == post_dunny
