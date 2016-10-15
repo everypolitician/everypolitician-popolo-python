@@ -1,5 +1,5 @@
-WARNING: this is a pre-release version of this module - use at your own risk
-============================================================================
+everypolitician-popolo for Python
+=================================
 
 This is a port of the Ruby gem `everypolitician-popolo
 <https://github.com/everypolitician/everypolitician-popolo>`__ to
