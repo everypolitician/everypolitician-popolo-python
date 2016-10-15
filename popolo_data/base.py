@@ -424,6 +424,10 @@ class Area(PopoloObject):
 class Post(PopoloObject):
 
     @property
+    def id(self):
+        return self.data.get('id')
+
+    @property
     def label(self):
         return self.data.get('label')
 

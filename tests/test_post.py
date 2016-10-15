@@ -53,6 +53,12 @@ class TestPosts(TestCase):
             post = popolo.posts[0]
             assert post.label == 'Nominated Representative'
 
+    def test_post_id(self):
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            post = popolo.posts.first
+            assert post.id == 'nominated_representative'
+
     def test_post_has_organization_id(self):
         with example_file(EXAMPLE_POST_JSON) as fname:
             popolo = Popolo.from_filename(fname)
