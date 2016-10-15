@@ -376,6 +376,13 @@ class Membership(PopoloObject):
         return NotImplemented
 
 
+class Area(PopoloObject):
+
+    @property
+    def name(self):
+        return self.data.get('name')
+
+
 class PopoloCollection(object):
 
     def __init__(self, data_list, object_class, all_popolo):
@@ -434,3 +441,9 @@ class MembershipCollection(PopoloCollection):
     def __init__(self, memberships_data, all_popolo):
         super(MembershipCollection, self).__init__(
             memberships_data, Membership, all_popolo)
+
+class AreaCollection(PopoloCollection):
+
+    def __init__(self, areas_data, all_popolo):
+        super(AreaCollection, self).__init__(
+            areas_data, Area, all_popolo)

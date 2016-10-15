@@ -3,7 +3,8 @@ import json
 import requests
 
 from .base import (
-    MembershipCollection, PersonCollection, OrganizationCollection)
+    AreaCollection, MembershipCollection, PersonCollection,
+    OrganizationCollection)
 
 
 class Popolo(object):
@@ -32,3 +33,7 @@ class Popolo(object):
     @property
     def memberships(self):
         return MembershipCollection(self.json_data.get('memberships', []), self)
+
+    @property
+    def areas(self):
+        return AreaCollection(self.json_data.get('areas', []), self)
