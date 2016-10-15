@@ -386,6 +386,10 @@ class Area(PopoloObject):
     def type(self):
         return self.data.get('type')
 
+    @property
+    def identifiers(self):
+        return self.get_related_object_list('identifiers')
+
 
 class PopoloCollection(object):
 

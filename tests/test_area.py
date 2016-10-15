@@ -51,3 +51,13 @@ class TestAreas(TestCase):
         popolo = Popolo({"areas": [EXAMPLE_AREA]})
         area = popolo.areas[0]
         assert area.type == 'constituency'
+
+    def test_area_identifiers(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        assert area.identifiers == [
+            {
+                "identifier": "Q3032626",
+                "scheme": "wikidata"
+            }
+        ]
