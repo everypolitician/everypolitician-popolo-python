@@ -431,6 +431,10 @@ class Post(PopoloObject):
     def organization_id(self):
         return self.data.get('organization_id')
 
+    @property
+    def organization(self):
+        return self.all_popolo.organizations.get(id=self.organization_id)
+
 
 class PopoloCollection(object):
 

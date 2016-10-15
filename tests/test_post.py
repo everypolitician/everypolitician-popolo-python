@@ -22,6 +22,20 @@ EXAMPLE_POST_JSON = b'''
             "label": "Women's Representative",
             "organization_id": "574eff8e-8171-4f2b-8279-60ed8dec1a2a"
         }
+    ],
+    "organizations": [
+        {
+            "classification": "legislature",
+            "id": "574eff8e-8171-4f2b-8279-60ed8dec1a2a",
+            "identifiers": [
+                {
+                    "identifier": "Q1701225",
+                    "scheme": "wikidata"
+                }
+            ],
+            "name": "National Assembly",
+            "seats": 349
+        }
     ]
 }
 '''
@@ -45,3 +59,10 @@ class TestPosts(TestCase):
             assert len(popolo.posts) == 2
             post = popolo.posts[0]
             assert post.organization_id == '574eff8e-8171-4f2b-8279-60ed8dec1a2a'
+
+    def test_post_has_organization(self):
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            national_assembly = popolo.organizations.first
+            nom_rep = popolo.posts.first
+            assert nom_rep.organization == national_assembly
