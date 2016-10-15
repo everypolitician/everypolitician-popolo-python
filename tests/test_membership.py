@@ -254,3 +254,10 @@ class TestPersonMemberships(TestCase):
             post_dunny = popolo.posts[0]
             m = popolo.memberships[0]
             assert m.post == post_dunny
+
+    def test_membership_legislative_period(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            event_pitt = popolo.events[0]
+            m = popolo.memberships[0]
+            assert m.legislative_period == event_pitt

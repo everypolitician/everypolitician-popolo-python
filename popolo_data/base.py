@@ -346,6 +346,10 @@ class Membership(PopoloObject):
         return self.data.get('legislative_period_id')
 
     @property
+    def legislative_period(self):
+        return self.all_popolo.events.get(id=self.legislative_period_id)
+
+    @property
     def on_behalf_of_id(self):
         return self.data.get('on_behalf_of_id')
 
