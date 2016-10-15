@@ -1,0 +1,4 @@
+0.0.4
+    * The initial release: this is the first release with
+      reasonable parity with the Ruby gem that this package is
+      based on.
