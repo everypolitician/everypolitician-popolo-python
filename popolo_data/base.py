@@ -379,6 +379,10 @@ class Membership(PopoloObject):
 class Area(PopoloObject):
 
     @property
+    def id(self):
+        return self.data.get('id')
+
+    @property
     def name(self):
         return self.data.get('name')
 

@@ -47,6 +47,11 @@ class TestAreas(TestCase):
         area = popolo.areas[0]
         assert area.name == 'Tartu linn'
 
+    def test_area_id(self):
+        popolo = Popolo({"areas": [EXAMPLE_AREA]})
+        area = popolo.areas[0]
+        assert area.id == 'area/tartu_linn'
+
     def test_area_type(self):
         popolo = Popolo({"areas": [EXAMPLE_AREA]})
         area = popolo.areas[0]
