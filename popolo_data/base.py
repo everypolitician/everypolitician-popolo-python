@@ -443,6 +443,16 @@ class Post(PopoloObject):
         fmt = str("<Post: {0}>")
         return fmt.format(self.label)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
 
 class PopoloCollection(object):
 

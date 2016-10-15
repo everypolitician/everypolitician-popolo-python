@@ -81,3 +81,13 @@ class TestPosts(TestCase):
                 assert repr(post) == b"<Post: Nominated Representative>"
             else:
                 assert repr(post) == u"<Post: Nominated Representative>"
+
+    def test_post_identity_equality_and_inequality(self):
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo_a = Popolo.from_filename(fname)
+        post_a = popolo_a.posts.first
+        with example_file(EXAMPLE_POST_JSON) as fname:
+            popolo_b = Popolo.from_filename(fname)
+        post_b = popolo_b.posts.first
+        assert post_a == post_b
+        assert not (post_a != post_b)
