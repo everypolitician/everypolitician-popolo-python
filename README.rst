@@ -3,7 +3,7 @@ everypolitician-popolo for Python
 
 This is a port of the Ruby gem `everypolitician-popolo
 <https://github.com/everypolitician/everypolitician-popolo>`__ to
-Python.  Even this README is strongly based on that that gem.
+Python.  Even this README is strongly based on that gem.
 
 
 Installation
