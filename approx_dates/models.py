@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 import calendar
-from datetime import date, datetime
+from datetime import date
 import re
 
 import six
