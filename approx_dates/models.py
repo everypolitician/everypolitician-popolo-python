@@ -80,5 +80,18 @@ class ApproxDate(object):
     def __ne__(self, other):
         return not (self == other)
 
+    @classmethod
+    def possibly_between(cls, start_date, d, end_date):
+        try:
+            earlier_bound = start_date.earliest_date
+        except AttributeError:
+            earlier_bound = start_date
+        try:
+            later_bound = end_date.latest_date
+        except AttributeError:
+            later_bound = end_date
+        return earlier_bound <= d <= later_bound
+
+
 ApproxDate.FUTURE = ApproxDate(_max_date, _max_date)
 ApproxDate.PAST = ApproxDate(_min_date, _min_date)
