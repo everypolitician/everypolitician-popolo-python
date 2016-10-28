@@ -14,6 +14,10 @@ ISO8601_DATE_REGEX_YYYY_MM = \
 ISO8601_DATE_REGEX_YYYY = \
     re.compile(r'^(?P<year>\d{4})$')
 
+_max_date = date(9999, 12, 31)
+_min_date = date(1, 1, 1)
+
+
 @six.python_2_unicode_compatible
 class ApproxDate(object):
 
@@ -49,9 +53,21 @@ class ApproxDate(object):
         delta = self.latest_date - self.earliest_date
         return self.earliest_date + delta / 2
 
+    @property
+    def future(self):
+        return self.earliest_date == _max_date and self.latest_date == _max_date
+
+    @property
+    def past(self):
+        return self.earliest_date == _min_date and self.latest_date == _min_date
+
     def __str__(self):
         if self.source_string is not None:
             return six.text_type(self.source_string)
+        if self.future:
+            return 'future'
+        if self.past:
+            return 'past'
         return '{0} to {1}'.format(self.earliest_date, self.latest_date)
 
     def __eq__(self, other):
@@ -63,3 +79,6 @@ class ApproxDate(object):
 
     def __ne__(self, other):
         return not (self == other)
+
+ApproxDate.FUTURE = ApproxDate(_max_date, _max_date)
+ApproxDate.PAST = ApproxDate(_min_date, _min_date)
