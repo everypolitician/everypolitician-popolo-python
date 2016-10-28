@@ -489,3 +489,14 @@ class TestPersons(TestCase):
                 person.name_at(date(1996, 1, 1))
             assert str("Multiple names for <Person: Bob> found at date 1996-01-01") in \
                 str(excinfo)
+
+    def test_hash_magic_method(self):
+        with example_file(EXAMPLE_TWO_PEOPLE) as fname:
+            popolo_a = Popolo.from_filename(fname)
+            popolo_b = Popolo.from_filename(fname)
+            set_of_people = set()
+            for p in popolo_a.persons:
+                set_of_people.add(p)
+            for p in popolo_b.persons:
+                set_of_people.add(p)
+            assert len(set_of_people) == 2

@@ -91,6 +91,19 @@ class PopoloObject(object):
     def key_for_hash(self):
         return self.id
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id == other.id
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return self.id != other.id
+        return NotImplemented
+
+    def __hash__(self):
+        return hash(self.key_for_hash)
+
 
 class CurrentMixin(object):
 
@@ -196,16 +209,6 @@ class Person(PopoloObject):
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id == other.id
-        return NotImplemented
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id != other.id
-        return NotImplemented
-
     def name_at(self, particular_date):
         historic_names = [n for n in self.other_names if n.get('end_date')]
         if not historic_names:
@@ -251,6 +254,9 @@ class Person(PopoloObject):
             m for m in self.all_popolo.memberships
             if m.person_id == self.id
         ]
+
+    __hash__ = PopoloObject.__hash__
+
 
 class Organization(PopoloObject):
 
@@ -301,16 +307,6 @@ class Organization(PopoloObject):
         if six.PY2:
             return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id == other.id
-        return NotImplemented
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id != other.id
-        return NotImplemented
 
     @property
     def identifiers(self):
@@ -407,6 +403,9 @@ class Membership(CurrentMixin, PopoloObject):
     def key_for_hash(self):
         return json.dumps(self.data, sort_keys=True)
 
+    def __hash__(self):
+        return hash(self.key_for_hash)
+
 
 class Area(PopoloObject):
 
@@ -438,16 +437,6 @@ class Area(PopoloObject):
         fmt = str("<Area: {0}>")
         return fmt.format(self.name)
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id == other.id
-        return NotImplemented
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id != other.id
-        return NotImplemented
-
 
 class Post(PopoloObject):
 
@@ -470,16 +459,6 @@ class Post(PopoloObject):
     def __repr__(self):
         fmt = str("<Post: {0}>")
         return fmt.format(self.label)
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id == other.id
-        return NotImplemented
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id != other.id
-        return NotImplemented
 
 
 class Event(CurrentMixin, PopoloObject):
@@ -515,16 +494,6 @@ class Event(CurrentMixin, PopoloObject):
     def __repr__(self):
         fmt = str("<Event: {0}>")
         return fmt.format(self.name)
-
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id == other.id
-        return NotImplemented
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.id != other.id
-        return NotImplemented
 
     @property
     def identifiers(self):

@@ -289,3 +289,14 @@ class TestPersonMemberships(TestCase):
             popolo = Popolo.from_filename(fname)
             m = popolo.memberships[0]
             assert m.current
+
+    def test_hash_magic_method(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo_a = Popolo.from_filename(fname)
+            popolo_b = Popolo.from_filename(fname)
+            set_of_memberships = set()
+            for m in popolo_a.memberships:
+                set_of_memberships.add(m)
+            for m in popolo_b.memberships:
+                set_of_memberships.add(m)
+            assert len(set_of_memberships) == 3
