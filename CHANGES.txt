@@ -1,3 +1,14 @@
+0.0.6
+    * Fix a bug where properties returning dates didn't
+      consistently return ApproxDate objects.
+    * Make all Popolo objects hashable, so you can use set() to
+      remove duplicates, for example.
+    * ApproxDate can now express dates arbitrarily far in the
+      future or past.
+    * Add methods to Membership and Event to make it easy to
+      check if the object is current with respect to its
+      start_date and end_date.
+    * Make access to single related objects much more efficient.
 0.0.5
     * Add basic support for partial dates (e.g. '1999-12'). All
       date properties now return ApproxDate objects.
