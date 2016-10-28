@@ -1,5 +1,6 @@
 from datetime import date, datetime
 
+from approx_dates.models import ApproxDate
 import six
 
 
@@ -26,7 +27,7 @@ class PopoloObject(object):
     def get_date(self, attr, default):
         d = self.data.get(attr)
         if d:
-            return datetime.strptime(d, '%Y-%m-%d').date()
+            return ApproxDate.from_iso8601(d)
         return default
 
     def get_related_object_list(self, popolo_array):
