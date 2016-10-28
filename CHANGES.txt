@@ -1,3 +1,6 @@
+0.0.8
+    * approx_dates is now a separate package on PyPi; this
+      version switches to using that.
 0.0.7
     * An exception is no longer raised if you call
       Person.twitter when there are multiple Twitter usernames
