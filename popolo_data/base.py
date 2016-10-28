@@ -388,6 +388,13 @@ class Membership(PopoloObject):
             return self.data != other.data
         return NotImplemented
 
+    def current_at(self, when):
+        return ApproxDate.possibly_between(self.start_date, when, self.end_date)
+
+    @property
+    def current(self):
+        return self.current_at(date.today())
+
 
 class Area(PopoloObject):
 

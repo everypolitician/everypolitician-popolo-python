@@ -2,6 +2,7 @@ from datetime import date
 from unittest import TestCase
 
 import pytest
+from mock import patch
 import six
 
 from .helpers import example_file
@@ -261,3 +262,30 @@ class TestPersonMemberships(TestCase):
             event_pitt = popolo.events[0]
             m = popolo.memberships[0]
             assert m.legislative_period == event_pitt
+
+    def test_membership_current_at_true(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            m = popolo.memberships[0]
+            assert m.current_at(date(1784, 4, 30))
+
+    def test_membership_current_at_false_before(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            m = popolo.memberships[0]
+            assert not m.current_at(date(1600, 1, 1))
+
+    def test_membership_current_at_false_after(self):
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            m = popolo.memberships[0]
+            assert not m.current_at(date(1800, 1, 1))
+
+    @patch('popolo_data.base.date')
+    def test_membership_current_true(self, mock_date):
+        mock_date.today.return_value = date(1784, 4, 30)
+        mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
+        with example_file(EXAMPLE_MEMBERSHIP_ALL_FIELDS) as fname:
+            popolo = Popolo.from_filename(fname)
+            m = popolo.memberships[0]
+            assert m.current
