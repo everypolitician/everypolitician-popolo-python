@@ -1,3 +1,11 @@
+0.0.7
+    * An exception is no longer raised if you call
+      Person.twitter when there are multiple Twitter usernames
+      found. The complete list can now be found with
+      twitter_all. (Similar changes have been made for phone,
+      fax and facebook.)
+    * ApproxDate now has a proper repr() representation
+      (i.e. the repr can be used to recreate the object)
 0.0.6
     * Fix a bug where properties returning dates didn't
       consistently return ApproxDate objects.
