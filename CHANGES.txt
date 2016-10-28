@@ -1,3 +1,6 @@
+0.0.5
+    * Add basic support for partial dates (e.g. '1999-12'). All
+      date properties now return ApproxDate objects.
 0.0.4
     * The initial release: this is the first release with
       reasonable parity with the Ruby gem that this package is
