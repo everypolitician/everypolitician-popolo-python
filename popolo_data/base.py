@@ -87,6 +87,16 @@ class PopoloObject(object):
             'contact_details', 'type', contact_type, 'value')
 
 
+class CurrentMixin(object):
+
+    def current_at(self, when):
+        return ApproxDate.possibly_between(self.start_date, when, self.end_date)
+
+    @property
+    def current(self):
+        return self.current_at(date.today())
+
+
 class Person(PopoloObject):
 
     class DoesNotExist(ObjectDoesNotExist):
@@ -306,7 +316,7 @@ class Organization(PopoloObject):
         return self.get_related_object_list('links')
 
 
-class Membership(PopoloObject):
+class Membership(CurrentMixin, PopoloObject):
 
     class DoesNotExist(ObjectDoesNotExist):
         pass
@@ -388,13 +398,6 @@ class Membership(PopoloObject):
             return self.data != other.data
         return NotImplemented
 
-    def current_at(self, when):
-        return ApproxDate.possibly_between(self.start_date, when, self.end_date)
-
-    @property
-    def current(self):
-        return self.current_at(date.today())
-
 
 class Area(PopoloObject):
 
@@ -470,7 +473,7 @@ class Post(PopoloObject):
         return NotImplemented
 
 
-class Event(PopoloObject):
+class Event(CurrentMixin, PopoloObject):
 
     @property
     def id(self):

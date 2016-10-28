@@ -3,6 +3,7 @@
 from datetime import date
 from unittest import TestCase
 
+from mock import patch
 import six
 
 from .helpers import example_file
@@ -120,3 +121,30 @@ class TestEvents(TestCase):
         event_b = popolo_b.events.first
         assert event_a == event_b
         assert not (event_a != event_b)
+
+    def test_term_current_at_true(self):
+        with example_file(EXAMPLE_EVENT_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            event = popolo.events[0]
+            assert event.current_at(date(2013, 1, 1))
+
+    def test_term_current_at_false_before(self):
+        with example_file(EXAMPLE_EVENT_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            event = popolo.events[0]
+            assert not event.current_at(date(1980, 1, 1))
+
+    def test_term_current_at_false_after(self):
+        with example_file(EXAMPLE_EVENT_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            event = popolo.events[0]
+            assert not event.current_at(date(2020, 1, 1))
+
+    @patch('popolo_data.base.date')
+    def test_term_current_true(self, mock_date):
+        mock_date.today.return_value = date(2013, 1, 1)
+        mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
+        with example_file(EXAMPLE_EVENT_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            event = popolo.events[0]
+            assert event.current
