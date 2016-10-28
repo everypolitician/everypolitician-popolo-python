@@ -142,7 +142,7 @@ class TestMemberships(TestCase):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:
             popolo = Popolo.from_filename(fname)
             m = popolo.memberships[0]
-            assert m.end_date >= date(2500, 1, 1)
+            assert m.end_date.future
 
     def test_organization_repr(self):
         with example_file(EXAMPLE_SINGLE_MEMBERSHIP) as fname:

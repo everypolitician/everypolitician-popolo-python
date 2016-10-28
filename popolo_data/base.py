@@ -368,11 +368,11 @@ class Membership(PopoloObject):
 
     @property
     def start_date(self):
-        return self.get_date('start_date', date(1, 1, 1))
+        return self.get_date('start_date', ApproxDate.PAST)
 
     @property
     def end_date(self):
-        return self.get_date('end_date', date(9999, 12, 31))
+        return self.get_date('end_date', ApproxDate.FUTURE)
 
     def __repr__(self):
         fmt = str("<Membership: '{0}' at '{1}'>")
@@ -479,11 +479,11 @@ class Event(PopoloObject):
 
     @property
     def start_date(self):
-        return self.get_date('start_date', date(1, 1, 1))
+        return self.get_date('start_date', ApproxDate.PAST)
 
     @property
     def end_date(self):
-        return self.get_date('end_date', date(9999, 12, 31))
+        return self.get_date('end_date', ApproxDate.FUTURE)
 
     @property
     def organization_id(self):
