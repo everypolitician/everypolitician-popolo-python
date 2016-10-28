@@ -51,3 +51,13 @@ class ApproxDate(object):
 
     def __str__(self):
         return six.text_type(self.source_string)
+
+    def __eq__(self, other):
+        if isinstance(other, date):
+            return self.earliest_date == self.latest_date and \
+               self.earliest_date == other
+        return self.earliest_date == other.earliest_date and \
+            self.latest_date == other.latest_date
+
+    def __ne__(self, other):
+        return not (self == other)
