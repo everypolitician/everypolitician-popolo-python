@@ -39,3 +39,7 @@ class TestCreation(TestCase):
     def test_midpoint_for_year(self):
         d = ApproxDate.from_iso8601('2016')
         assert d.midpoint_date == date(2016, 7, 1)
+
+    def test_abritrary_date_range(self):
+        d = ApproxDate(date(1926, 1, 3), date(2016, 3, 8))
+        assert text_type(d) == '1926-01-03 to 2016-03-08'

@@ -50,7 +50,9 @@ class ApproxDate(object):
         return self.earliest_date + delta / 2
 
     def __str__(self):
-        return six.text_type(self.source_string)
+        if self.source_string is not None:
+            return six.text_type(self.source_string)
+        return '{0} to {1}'.format(self.earliest_date, self.latest_date)
 
     def __eq__(self, other):
         if isinstance(other, date):
