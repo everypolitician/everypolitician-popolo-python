@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import json
 
 from approx_dates.models import ApproxDate
 import six
@@ -85,6 +86,10 @@ class PopoloObject(object):
     def contact_detail(self, contact_type):
         return self.get_related_value(
             'contact_details', 'type', contact_type, 'value')
+
+    @property
+    def key_for_hash(self):
+        return self.id
 
 
 class CurrentMixin(object):
@@ -334,7 +339,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def person(self):
-        return self.all_popolo.persons.get(id=self.person_id)
+        return self.all_popolo.persons.lookup_from_key[self.person_id]
 
     @property
     def organization_id(self):
@@ -342,7 +347,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.get(id=self.organization_id)
+        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
 
     @property
     def area_id(self):
@@ -350,7 +355,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def area(self):
-        return self.all_popolo.areas.get(id=self.area_id)
+        return self.all_popolo.areas.lookup_from_key[self.area_id]
 
     @property
     def legislative_period_id(self):
@@ -358,7 +363,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def legislative_period(self):
-        return self.all_popolo.events.get(id=self.legislative_period_id)
+        return self.all_popolo.events.lookup_from_key[self.legislative_period_id]
 
     @property
     def on_behalf_of_id(self):
@@ -366,7 +371,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def on_behalf_of(self):
-        return self.all_popolo.organizations.get(id=self.on_behalf_of_id)
+        return self.all_popolo.organizations.lookup_from_key[self.on_behalf_of_id]
 
     @property
     def post_id(self):
@@ -374,7 +379,7 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def post(self):
-        return self.all_popolo.posts.get(id=self.post_id)
+        return self.all_popolo.posts.lookup_from_key[self.post_id]
 
     @property
     def start_date(self):
@@ -397,6 +402,10 @@ class Membership(CurrentMixin, PopoloObject):
         if isinstance(other, self.__class__):
             return self.data != other.data
         return NotImplemented
+
+    @property
+    def key_for_hash(self):
+        return json.dumps(self.data, sort_keys=True)
 
 
 class Area(PopoloObject):
@@ -456,7 +465,7 @@ class Post(PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.get(id=self.organization_id)
+        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
 
     def __repr__(self):
         fmt = str("<Post: {0}>")
@@ -501,7 +510,7 @@ class Event(CurrentMixin, PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.get(id=self.organization_id)
+        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
 
     def __repr__(self):
         fmt = str("<Event: {0}>")
@@ -528,6 +537,9 @@ class PopoloCollection(object):
         self.object_class = object_class
         self.object_list = \
             [self.object_class(data, all_popolo) for data in data_list]
+        self.lookup_from_key = {}
+        for o in self.object_list:
+            self.lookup_from_key[o.key_for_hash] = o
 
     def __len__(self):
         return len(self.object_list)
