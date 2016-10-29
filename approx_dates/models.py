@@ -80,6 +80,18 @@ class ApproxDate(object):
     def __ne__(self, other):
         return not (self == other)
 
+    def __repr__(self):
+        if self.past:
+            return six.text_type('ApproxDate.PAST')
+        if self.future:
+            return six.text_type('ApproxDate.FUTURE')
+        if self.source_string:
+            source_fmt = 'ApproxDate.from_iso8601({0})'
+            return six.text_type(source_fmt.format(repr(self.source_string)))
+        no_source_fmt =  'ApproxDate({0}, {1})'
+        return six.text_type(no_source_fmt.format(
+            repr(self.earliest_date), repr(self.latest_date)))
+
     @classmethod
     def possibly_between(cls, start_date, d, end_date):
         try:
