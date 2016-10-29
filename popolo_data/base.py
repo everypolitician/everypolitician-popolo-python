@@ -27,6 +27,10 @@ def extract_twitter_username(username_or_url):
         return re.sub(r'^/([^/]+).*', r'\1', split_url.path)
     return username_or_url.strip().lstrip('@')
 
+def first(l):
+    '''Return the first item of a list, or None if it's empty'''
+    return l[0] if l else None
+
 
 class PopoloObject(object):
 
@@ -43,7 +47,7 @@ class PopoloObject(object):
     def get_related_object_list(self, popolo_array):
         return self.data.get(popolo_array, [])
 
-    def get_related_value(
+    def get_related_values(
             self, popolo_array, info_type_key, info_type, info_value_key):
         '''Get a value from one of the Popolo related objects
 
@@ -72,29 +76,30 @@ class PopoloObject(object):
             self.get_related_value('links', 'note', 'wikipedia', 'url')
             # => 'https://en.wikipedia.org/wiki/Dale_Cooper'
         '''
-        matches = [
+        return [
             o[info_value_key]
             for o in self.get_related_object_list(popolo_array)
             if o[info_type_key] == info_type]
-        n = len(matches)
-        if n == 0:
-            return None
-        elif n > 1:
-            msg = "Multiple {0} found with {1}: {2}; there were {3}"
-            raise MultipleObjectsReturned(msg.format(
-                popolo_array, info_type_key, info_type, n))
-        return matches[0]
 
-    def identifier(self, scheme):
-        return self.get_related_value(
+    def identifier_values(self, scheme):
+        return self.get_related_values(
             'identifiers', 'scheme', scheme, 'identifier')
 
-    def link(self, note):
-        return self.get_related_value('links', 'note', note, 'url')
+    def identifier_value(self, scheme):
+        return first(self.identifier_values(scheme))
 
-    def contact_detail(self, contact_type):
-        return self.get_related_value(
+    def link_values(self, note):
+        return self.get_related_values('links', 'note', note, 'url')
+
+    def link_value(self, note):
+        return first(self.link_values(note))
+
+    def contact_detail_values(self, contact_type):
+        return self.get_related_values(
             'contact_details', 'type', contact_type, 'value')
+
+    def contact_detail_value(self, contact_type):
+        return first(self.contact_detail_values(contact_type))
 
     @property
     def key_for_hash(self):
@@ -194,24 +199,25 @@ class Person(PopoloObject):
 
     @property
     def wikidata(self):
-        return self.identifier('wikidata')
+        return self.identifier_value('wikidata')
 
     @property
     def twitter(self):
-        username_or_url = self.contact_detail('twitter') or self.link('twitter')
+        username_or_url = self.contact_detail_value('twitter') or \
+            self.link_value('twitter')
         return extract_twitter_username(username_or_url)
 
     @property
     def phone(self):
-        return self.contact_detail('phone')
+        return self.contact_detail_value('phone')
 
     @property
     def facebook(self):
-        return self.link('facebook')
+        return self.link_value('facebook')
 
     @property
     def fax(self):
-        return self.contact_detail('fax')
+        return self.contact_detail_value('fax')
 
     def __repr__(self):
         fmt = str('<Person: {0}>')
@@ -286,7 +292,7 @@ class Organization(PopoloObject):
 
     @property
     def wikidata(self):
-        return self.identifier('wikidata')
+        return self.identifier_value('wikidata')
 
     @property
     def classification(self):
@@ -441,7 +447,7 @@ class Area(PopoloObject):
 
     @property
     def wikidata(self):
-        return self.identifier('wikidata')
+        return self.identifier_value('wikidata')
 
     def __repr__(self):
         fmt = str("<Area: {0}>")

@@ -125,34 +125,6 @@ class TestOrganizations(TestCase):
             o = popolo.organizations.first
             assert o.wikidata is None
 
-    def test_multiple_identifiers(self):
-        with example_file(
-                b'''
-{
-    "organizations": [
-        {
-            "id": "starfleet",
-            "name": "Starfleet",
-            "identifiers": [
-                {
-                    "identifier": "Q288523",
-                    "scheme": "wikidata"
-                },
-                {
-                    "identifier": "Q288523-also",
-                    "scheme": "wikidata"
-                }
-            ]
-        }
-    ]
-}
-''') as fname:
-            popolo = Popolo.from_filename(fname)
-            assert len(popolo.organizations) == 1
-            o = popolo.organizations[0]
-            with pytest.raises(MultipleObjectsReturned):
-                o.wikidata
-
     def test_organization_repr(self):
         with example_file(b'{"organizations": [{"name": "M\u00e9decins Sans Fronti\u00e8res"}]}') as fname:
             popolo = Popolo.from_filename(fname)
