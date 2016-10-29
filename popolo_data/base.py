@@ -1,7 +1,10 @@
 from datetime import date, datetime
 import json
+import re
+
 
 from approx_dates.models import ApproxDate
+from six.moves.urllib_parse import urlsplit
 import six
 
 
@@ -17,6 +20,12 @@ def _is_name_current_at(name_object, date_string):
     start_range = name_object.get('start_date') or '0001-01-01'
     end_range = name_object.get('end_date') or '9999-12-31'
     return date_string >= start_range and date_string <= end_range
+
+def extract_twitter_username(username_or_url):
+    split_url = urlsplit(username_or_url)
+    if split_url.netloc == 'twitter.com':
+        return re.sub(r'^/([^/]+).*', r'\1', split_url.path)
+    return username_or_url.strip().lstrip('@')
 
 
 class PopoloObject(object):
