@@ -125,7 +125,7 @@ class TestOrganizations(TestCase):
             o = popolo.organizations.first
             assert o.wikidata is None
 
-    def test_multiple_identfiers(self):
+    def test_multiple_identifiers(self):
         with example_file(
                 b'''
 {
