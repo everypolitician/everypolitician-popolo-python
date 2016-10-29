@@ -158,8 +158,7 @@ class TestPersons(TestCase):
 ''') as fname:
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
-            assert person.twitter == \
-                'https://twitter.com/notarealtwitteraccountforharry'
+            assert person.twitter == 'notarealtwitteraccountforharry'
 
     def test_person_contact_detail_twitter_and_contact_details_list(self):
         with example_file(b'''

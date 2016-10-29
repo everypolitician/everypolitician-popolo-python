@@ -198,7 +198,8 @@ class Person(PopoloObject):
 
     @property
     def twitter(self):
-        return self.contact_detail('twitter') or self.link('twitter')
+        username_or_url = self.contact_detail('twitter') or self.link('twitter')
+        return extract_twitter_username(username_or_url)
 
     @property
     def phone(self):
