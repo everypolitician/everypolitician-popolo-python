@@ -562,9 +562,7 @@ class PopoloCollection(object):
 
     @property
     def first(self):
-        if len(self.object_list):
-            return self[0]
-        return None
+        return first(self.object_list)
 
     def filter(self, **kwargs):
         return [
