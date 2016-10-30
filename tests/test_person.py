@@ -397,6 +397,21 @@ class TestPersons(TestCase):
                 }
             ]
 
+    def test_person_no_other_names(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "id": "john-q-public",
+            "name": "Mr. John Q. Public, Esq."
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.other_names == []
+
     def test_person_sources(self):
         with example_file(b'''
 {
@@ -505,3 +520,10 @@ class TestPersons(TestCase):
             for p in popolo_b.persons:
                 set_of_people.add(p)
             assert len(set_of_people) == 2
+
+    def test_equality_and_inequality_not_implemented(self):
+        with example_file(EXAMPLE_TWO_PEOPLE) as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert not (person == "a string, not a person")
+            assert (person != "a string not a person")

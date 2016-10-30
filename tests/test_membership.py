@@ -300,3 +300,10 @@ class TestPersonMemberships(TestCase):
             for m in popolo_b.memberships:
                 set_of_memberships.add(m)
             assert len(set_of_memberships) == 3
+
+    def test_equality_and_inequality_not_implemented(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            m = popolo.memberships.first
+            assert not (m == "a string, not a person")
+            assert (m != "a string not a person")
