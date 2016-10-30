@@ -31,6 +31,14 @@ def first(l):
     '''Return the first item of a list, or None if it's empty'''
     return l[0] if l else None
 
+def unique_preserving_order(sequence):
+    '''Return a list with only the unique elements, preserving order
+
+    This is from http://stackoverflow.com/a/480227/223092'''
+    seen = set()
+    seen_add = seen.add
+    return [x for x in sequence if not (x in seen or seen_add(x))]
+
 
 class PopoloObject(object):
 
@@ -208,16 +216,36 @@ class Person(PopoloObject):
         return extract_twitter_username(username_or_url)
 
     @property
+    def twitter_all(self):
+        # The Twitter screen names in contact_details and links will
+        # in most cases be the same, so remove duplicates:
+        return unique_preserving_order(
+            extract_twitter_username(v) for v in
+            self.contact_detail_values('twitter') + self.link_values('twitter'))
+
+    @property
     def phone(self):
         return self.contact_detail_value('phone')
+
+    @property
+    def phone_all(self):
+        return self.contact_detail_values('phone')
 
     @property
     def facebook(self):
         return self.link_value('facebook')
 
     @property
+    def facebook_all(self):
+        return self.link_values('facebook')
+
+    @property
     def fax(self):
         return self.contact_detail_value('fax')
+
+    @property
+    def fax_all(self):
+        return self.contact_detail_values('fax')
 
     def __repr__(self):
         fmt = str('<Person: {0}>')
