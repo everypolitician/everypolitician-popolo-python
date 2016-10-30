@@ -159,6 +159,7 @@ class TestPersons(TestCase):
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.twitter == 'notarealtwitteraccountforharry'
+            assert person.twitter_all == ['notarealtwitteraccountforharry']
 
     def test_person_contact_detail_twitter_and_contact_details_list(self):
         with example_file(b'''
@@ -194,6 +195,7 @@ class TestPersons(TestCase):
                     "value": "555-5555"
                 }
             ]
+            assert person.twitter_all == ['notarealtwitteraccountforharry']
 
     def test_sort_name(self):
         with example_file(b'''
@@ -291,7 +293,9 @@ class TestPersons(TestCase):
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.phone == '9304832'
+            assert person.phone_all == ['9304832']
             assert person.fax == '9304833'
+            assert person.fax_all == ['9304833']
 
     def test_person_facebook_and_links_list(self):
         with example_file(b'''
@@ -317,6 +321,8 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.facebook == \
                 'https://facebook.example.com/harry-s-truman'
+            assert person.facebook_all == \
+                ['https://facebook.example.com/harry-s-truman']
             assert person.links == [
                 {
                     "note": "facebook",
