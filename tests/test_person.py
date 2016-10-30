@@ -481,6 +481,27 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             assert person.name_at(date(1990, 6, 1)) == 'Robert'
 
+    def test_person_name_at_historic_none_overlap(self):
+        with example_file(b'''
+{
+    "persons": [
+        {
+            "name": "Bob",
+            "other_names": [
+                {
+                    "name": "Robert",
+                    "start_date": "1989-01-01",
+                    "end_date": "1999-12-31"
+                }
+            ]
+        }
+    ]
+}
+''') as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            assert person.name_at(date(2000, 1, 1)) == 'Bob'
+
     def test_person_multiple_names_at_one_date(self):
         with example_file(b'''
 {
