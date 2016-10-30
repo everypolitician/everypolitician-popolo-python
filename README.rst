@@ -1,6 +1,9 @@
 everypolitician-popolo for Python
 =================================
 
+.. image:: https://coveralls.io/repos/github/everypolitician/everypolitician-popolo-python/badge.svg?branch=master
+:target: https://coveralls.io/github/everypolitician/everypolitician-popolo-python?branch=master
+
 This is a port of the Ruby gem `everypolitician-popolo
 <https://github.com/everypolitician/everypolitician-popolo>`__ to
 Python.  Even this README is strongly based on that gem.
