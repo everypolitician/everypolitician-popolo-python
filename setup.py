@@ -15,6 +15,7 @@ setup(
     license = "AGPL",
     keywords = "politics data civic-tech",
     install_requires = [
+        'approx_dates',
         'requests',
         'six >= 1.9.0',
     ]
