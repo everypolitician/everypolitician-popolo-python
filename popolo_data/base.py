@@ -126,6 +126,13 @@ class PopoloObject(object):
     def __hash__(self):
         return hash(self.key_for_hash)
 
+    def repr_helper(self, enclosed_text):
+        fmt = str('<{0}: {1}>')
+        class_name = type(self).__name__
+        if six.PY2:
+            return fmt.format(class_name, enclosed_text.encode('utf-8'))
+        return fmt.format(class_name, enclosed_text)
+
 
 class CurrentMixin(object):
 
@@ -248,10 +255,7 @@ class Person(PopoloObject):
         return self.contact_detail_values('fax')
 
     def __repr__(self):
-        fmt = str('<Person: {0}>')
-        if six.PY2:
-            return fmt.format(self.name.encode('utf-8'))
-        return fmt.format(self.name)
+        return self.repr_helper(self.name)
 
     def name_at(self, particular_date):
         historic_names = [n for n in self.other_names if n.get('end_date')]
@@ -347,10 +351,7 @@ class Organization(PopoloObject):
         return self.data.get('other_names', [])
 
     def __repr__(self):
-        fmt = str('<Organization: {0}>')
-        if six.PY2:
-            return fmt.format(self.name.encode('utf-8'))
-        return fmt.format(self.name)
+        return self.repr_helper(self.name)
 
     @property
     def identifiers(self):
@@ -536,10 +537,7 @@ class Event(CurrentMixin, PopoloObject):
         return self.all_popolo.organizations.lookup_from_key[self.organization_id]
 
     def __repr__(self):
-        fmt = str("<Event: {0}>")
-        if six.PY2:
-            return fmt.format(self.name.encode('utf-8'))
-        return fmt.format(self.name)
+        return self.repr_helper(self.name)
 
     @property
     def identifiers(self):
