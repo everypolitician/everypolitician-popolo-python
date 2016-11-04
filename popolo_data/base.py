@@ -537,6 +537,8 @@ class Event(CurrentMixin, PopoloObject):
 
     def __repr__(self):
         fmt = str("<Event: {0}>")
+        if six.PY2:
+            return fmt.format(self.name.encode('utf-8'))
         return fmt.format(self.name)
 
     @property

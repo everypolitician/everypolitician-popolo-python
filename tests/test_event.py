@@ -46,6 +46,20 @@ EXAMPLE_EVENT_JSON = b'''
 }
 '''
 
+EXAMPLE_EVENT_NON_ASCII_JSON = b'''
+{
+    "events": [
+        {
+            "classification": "legislative period",
+            "end_date": "2015-03-23",
+            "id": "2015",
+            "name": "2015\xe2\x80\x94",
+            "start_date": "2015-03-01"
+        }
+    ]
+}
+'''
+
 
 class TestEvents(TestCase):
 
@@ -111,6 +125,15 @@ class TestEvents(TestCase):
                 assert repr(event) == b"<Event: 12th Riigikogu>"
             else:
                 assert repr(event) == u"<Event: 12th Riigikogu>"
+
+    def test_event_repr_non_ascii(self):
+        with example_file(EXAMPLE_EVENT_NON_ASCII_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            event = popolo.events.first
+            if six.PY2:
+                assert repr(event) == b"<Event: 2015\xe2\x80\x94>"
+            else:
+                assert repr(event) == u"<Event: 2015—>"
 
     def test_event_identity_equality_and_inequality(self):
         with example_file(EXAMPLE_EVENT_JSON) as fname:
