@@ -431,8 +431,9 @@ class Membership(CurrentMixin, PopoloObject):
         return self.get_date('end_date', ApproxDate.FUTURE)
 
     def __repr__(self):
-        fmt = str("<Membership: '{0}' at '{1}'>")
-        return fmt.format(self.person_id, self.organization_id)
+        enclosed = u"'{0}' at '{1}'".format(
+            self.person_id, self.organization_id)
+        return self.repr_helper(enclosed)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -479,8 +480,7 @@ class Area(PopoloObject):
         return self.identifier_value('wikidata')
 
     def __repr__(self):
-        fmt = str("<Area: {0}>")
-        return fmt.format(self.name)
+        return self.repr_helper(self.name)
 
 
 class Post(PopoloObject):
@@ -502,8 +502,7 @@ class Post(PopoloObject):
         return self.all_popolo.organizations.lookup_from_key[self.organization_id]
 
     def __repr__(self):
-        fmt = str("<Post: {0}>")
-        return fmt.format(self.label)
+        return self.repr_helper(self.label)
 
 
 class Event(CurrentMixin, PopoloObject):
