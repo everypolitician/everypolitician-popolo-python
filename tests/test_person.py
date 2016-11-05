@@ -197,6 +197,11 @@ class TestPersons(TestCase):
             ]
             assert person.twitter_all == ['notarealtwitteraccountforharry']
 
+    def test_twitter_property_none_for_no_twitter(self):
+        with example_file(EXAMPLE_TWO_PEOPLE) as fname:
+            person = Popolo.from_filename(fname).persons.first
+            assert person.twitter is None
+
     def test_sort_name(self):
         with example_file(b'''
 {

@@ -220,7 +220,9 @@ class Person(PopoloObject):
     def twitter(self):
         username_or_url = self.contact_detail_value('twitter') or \
             self.link_value('twitter')
-        return extract_twitter_username(username_or_url)
+        if username_or_url:
+            return extract_twitter_username(username_or_url)
+        return None
 
     @property
     def twitter_all(self):
