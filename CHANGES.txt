@@ -1,3 +1,6 @@
+0.0.10
+    * Fix the Person.twitter property when no Twitter details
+      were found.
 0.0.9
     * Fix __repr__ magic methods that broke on non-ASCII
       strings.
