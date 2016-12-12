@@ -48,7 +48,7 @@ All Popolo classes used by EveryPolitician are implemented:
 There are methods defined for each property on a class, e.g. for a
 Person:
 
-::
+.. code:: python
 
     len(popolo.persons) # => 60
     person = popolo.persons.first
