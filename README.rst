@@ -28,7 +28,7 @@ The following example uses `Åland Lagting
 <https://github.com/everypolitician/everypolitician-data/raw/master/data/Aland/Lagting/ep-popolo-v1.0.json>`__
 (which is the legislature of the Åland islands, available as
 JSON data from the `EveryPolitician page for Åland
-<http://everypolitician.org/aland/>`__). You can
+<http://everypolitician.org/aland/>`__).
 
 First you'll need to require the library and read in a file from disk.
 
