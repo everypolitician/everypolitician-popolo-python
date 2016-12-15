@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 import json
 import re
 
@@ -21,15 +21,18 @@ def _is_name_current_at(name_object, date_string):
     end_range = name_object.get('end_date') or '9999-12-31'
     return date_string >= start_range and date_string <= end_range
 
+
 def extract_twitter_username(username_or_url):
     split_url = urlsplit(username_or_url)
     if split_url.netloc == 'twitter.com':
         return re.sub(r'^/([^/]+).*', r'\1', split_url.path)
     return username_or_url.strip().lstrip('@')
 
+
 def first(l):
     '''Return the first item of a list, or None if it's empty'''
     return l[0] if l else None
+
 
 def unique_preserving_order(sequence):
     '''Return a list with only the unique elements, preserving order
@@ -137,7 +140,8 @@ class PopoloObject(object):
 class CurrentMixin(object):
 
     def current_at(self, when):
-        return ApproxDate.possibly_between(self.start_date, when, self.end_date)
+        return ApproxDate.possibly_between(
+            self.start_date, when, self.end_date)
 
     @property
     def current(self):
@@ -230,7 +234,8 @@ class Person(PopoloObject):
         # in most cases be the same, so remove duplicates:
         return unique_preserving_order(
             extract_twitter_username(v) for v in
-            self.contact_detail_values('twitter') + self.link_values('twitter'))
+            self.contact_detail_values('twitter') +
+            self.link_values('twitter'))
 
     @property
     def phone(self):
@@ -390,7 +395,8 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
+        collection = self.all_popolo.organizations
+        return collection.lookup_from_key[self.organization_id]
 
     @property
     def area_id(self):
@@ -406,7 +412,8 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def legislative_period(self):
-        return self.all_popolo.events.lookup_from_key[self.legislative_period_id]
+        collection = self.all_popolo.events
+        return collection.lookup_from_key[self.legislative_period_id]
 
     @property
     def on_behalf_of_id(self):
@@ -414,7 +421,8 @@ class Membership(CurrentMixin, PopoloObject):
 
     @property
     def on_behalf_of(self):
-        return self.all_popolo.organizations.lookup_from_key[self.on_behalf_of_id]
+        collection = self.all_popolo.organizations
+        return collection.lookup_from_key[self.on_behalf_of_id]
 
     @property
     def post_id(self):
@@ -501,7 +509,8 @@ class Post(PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
+        collection = self.all_popolo.organizations
+        return collection.lookup_from_key[self.organization_id]
 
     def __repr__(self):
         return self.repr_helper(self.label)
@@ -535,7 +544,8 @@ class Event(CurrentMixin, PopoloObject):
 
     @property
     def organization(self):
-        return self.all_popolo.organizations.lookup_from_key[self.organization_id]
+        collection = self.all_popolo.organizations
+        return collection.lookup_from_key[self.organization_id]
 
     def __repr__(self):
         return self.repr_helper(self.name)

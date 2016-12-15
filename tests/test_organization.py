@@ -3,12 +3,10 @@
 from datetime import date
 from unittest import TestCase
 
-import pytest
 import six
 
 from .helpers import example_file
 
-from popolo_data.base import MultipleObjectsReturned
 from popolo_data.importer import Popolo
 
 
@@ -126,12 +124,15 @@ class TestOrganizations(TestCase):
             assert o.wikidata is None
 
     def test_organization_repr(self):
-        with example_file(b'{"organizations": [{"name": "M\u00e9decins Sans Fronti\u00e8res"}]}') as fname:
+        json = b'{"organizations": ' \
+               b'  [{"name": "M\u00e9decins Sans Fronti\u00e8res"}]}'
+        with example_file(json) as fname:
             popolo = Popolo.from_filename(fname)
             assert len(popolo.organizations) == 1
             o = popolo.organizations[0]
             if six.PY2:
-                assert repr(o) == b"<Organization: M\xc3\xa9decins Sans Fronti\xc3\xa8res>"
+                assert repr(o) == \
+                    b"<Organization: M\xc3\xa9decins Sans Fronti\xc3\xa8res>"
             else:
                 assert repr(o) == u"<Organization: Médecins Sans Frontières>"
 
@@ -203,14 +204,14 @@ class TestOrganizations(TestCase):
                     'name': "Bob's Diner",
                     'start_date': '1950-01-01',
                     'end_date': '1954-12-31'
-                 },
-                 {
-                     'name': "Joe's Diner",
-                     'start_date': '1955-01-01'
-                 },
-                 {
-                     'name': "Famous Joe's"
-                 }
+                },
+                {
+                    'name': "Joe's Diner",
+                    'start_date': '1955-01-01'
+                },
+                {
+                    'name': "Famous Joe's"
+                }
             ]
 
     def test_organization_links_list(self):

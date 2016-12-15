@@ -28,11 +28,13 @@ class Popolo(object):
 
     @property
     def organizations(self):
-        return OrganizationCollection(self.json_data.get('organizations', []), self)
+        return OrganizationCollection(
+            self.json_data.get('organizations', []), self)
 
     @property
     def memberships(self):
-        return MembershipCollection(self.json_data.get('memberships', []), self)
+        return MembershipCollection(
+            self.json_data.get('memberships', []), self)
 
     @property
     def areas(self):

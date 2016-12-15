@@ -91,7 +91,8 @@ class TestEvents(TestCase):
         with example_file(EXAMPLE_EVENT_JSON) as fname:
             popolo = Popolo.from_filename(fname)
             event = popolo.events.first
-            assert event.organization_id == '1ba661a9-22ad-4d0f-8a60-fe8e28f2488c'
+            assert event.organization_id == \
+                '1ba661a9-22ad-4d0f-8a60-fe8e28f2488c'
 
     def test_event_organization(self):
         with example_file(EXAMPLE_EVENT_JSON) as fname:

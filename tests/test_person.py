@@ -67,7 +67,7 @@ class TestPersons(TestCase):
     def test_first_from_empty_file_returns_none(self):
         with example_file(b'{}') as filename:
             popolo = Popolo.from_filename(filename)
-            assert popolo.persons.first == None
+            assert popolo.persons.first is None
 
     def test_filter_of_people_none_matching(self):
         with example_file(EXAMPLE_TWO_PEOPLE) as fname:
@@ -131,7 +131,8 @@ class TestPersons(TestCase):
             ]
 
     def test_person_repr(self):
-        with example_file(b'{"persons": [{"name": "Paul l\'Astnam\u00e9"}]}') as fname:
+        json = b'{"persons": [{"name": "Paul l\'Astnam\u00e9"}]}'
+        with example_file(json) as fname:
             popolo = Popolo.from_filename(fname)
             assert len(popolo.persons) == 1
             person = popolo.persons[0]
@@ -244,8 +245,10 @@ class TestPersons(TestCase):
             assert person.gender == "male"
             assert person.honorific_prefix == "Sheriff"
             assert person.honorific_suffix == "Bookhouse Boy"
-            assert person.biography == "Harry S. Truman is the sheriff of Twin Peaks"
-            assert person.summary == "He assists Dale Cooper in the Laura Palmer case"
+            assert person.biography == \
+                "Harry S. Truman is the sheriff of Twin Peaks"
+            assert person.summary == \
+                "He assists Dale Cooper in the Laura Palmer case"
             assert person.given_name == "Harry"
             assert person.family_name == "Truman"
 
@@ -347,10 +350,12 @@ class TestPersons(TestCase):
             "name": "Бганба Валерий Рамшухович",
             "images": [
                 {
-                    "url": "http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg"
+                    "url":
+"http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg"
                 },
                 {
-                    "url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Бганба_Валерий_Рамшухович.jpg"
+                    "url":
+"https://upload.wikimedia.org/wikipedia/commons/a/a3/Бганба_Валерий_Рамшухович.jpg"
                 }
             ]
         }
@@ -360,8 +365,13 @@ class TestPersons(TestCase):
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             assert person.images == [
-                {'url': 'http://www.parlamentra.org/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg'},
-                {'url': u'https://upload.wikimedia.org/wikipedia/commons/a/a3/\u0411\u0433\u0430\u043d\u0431\u0430_\u0412\u0430\u043b\u0435\u0440\u0438\u0439_\u0420\u0430\u043c\u0448\u0443\u0445\u043e\u0432\u0438\u0447.jpg'}
+                {'url': 'http://www.parlamentra.org'
+                 '/upload/iblock/b85/%D1%80%D0%B0%D0%BC.jpg'},
+                {'url': u'https://upload.wikimedia.org'
+                 u'/wikipedia/commons/a/a3/\u0411\u0433\u0430\u043d'
+                 u'\u0431\u0430_\u0412\u0430\u043b\u0435\u0440\u0438'
+                 u'\u0439_\u0420\u0430\u043c\u0448\u0443\u0445\u043e'
+                 u'\u0432\u0438\u0447.jpg'}
             ]
 
     def test_person_other_names(self):
@@ -533,7 +543,9 @@ class TestPersons(TestCase):
             person = popolo.persons.first
             with pytest.raises(Exception) as excinfo:
                 person.name_at(date(1996, 1, 1))
-            assert str("Multiple names for <Person: Bob> found at date 1996-01-01") in \
+            expected_substring = "Multiple names for <Person: Bob> " \
+                                 "found at date 1996-01-01"
+            assert str(expected_substring) in \
                 str(excinfo)
 
     def test_hash_magic_method(self):

@@ -40,6 +40,7 @@ EXAMPLE_POST_JSON = b'''
 }
 '''
 
+
 class TestPosts(TestCase):
 
     def test_empty_file_gives_no_posts(self):
@@ -64,7 +65,8 @@ class TestPosts(TestCase):
             popolo = Popolo.from_filename(fname)
             assert len(popolo.posts) == 2
             post = popolo.posts[0]
-            assert post.organization_id == '574eff8e-8171-4f2b-8279-60ed8dec1a2a'
+            assert post.organization_id == \
+                '574eff8e-8171-4f2b-8279-60ed8dec1a2a'
 
     def test_post_has_organization(self):
         with example_file(EXAMPLE_POST_JSON) as fname:

@@ -3,7 +3,6 @@ from unittest import TestCase
 
 import pytest
 from mock import patch
-import six
 
 from .helpers import example_file
 
