@@ -7,9 +7,8 @@ import pytest
 import six
 
 from .helpers import example_file
-
-from popolo_data.importer import Popolo
-from popolo_data.base import Person
+from approx_dates.models import ApproxDate
+from popolo_data import Popolo, Person
 
 
 EXAMPLE_TWO_PEOPLE = b'''
@@ -264,8 +263,8 @@ class TestPersons(TestCase):
 ''') as fname:
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
-            assert person.birth_date is None
-            assert person.death_date is None
+            assert person.birth_date is ApproxDate.PAST
+            assert person.death_date is ApproxDate.FUTURE
 
     def test_full_birth_and_death_dates(self):
         with example_file(b'''
