@@ -136,7 +136,7 @@ class PopoloMeta(type):
         name = Attribute(attr="name")
         """
         
-        for k,v in dct.iteritems():
+        for k,v in six.iteritems(dct):
             if isinstance(v,Attribute) :
                 if v.attr == "":
                     v.attr = k 
