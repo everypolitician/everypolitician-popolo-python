@@ -169,6 +169,9 @@ class Membership(CurrentMixin, PopoloObject):
     def key_for_hash(self):
         return json.dumps(self.data, sort_keys=True)
 
+    def __hash__(self):
+        return hash(self.key_for_hash)
+
 
 class Area(PopoloObject):
     
