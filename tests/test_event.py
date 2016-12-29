@@ -60,6 +60,52 @@ EXAMPLE_EVENT_NON_ASCII_JSON = b'''
 }
 '''
 
+EXAMPLE_MULTIPLE_EVENTS = b'''
+{
+    "events": [
+        {
+            "classification": "legislative period",
+            "end_date": "2015-03-23",
+            "id": "term/12",
+            "identifiers": [
+                {
+                    "identifier": "Q967549",
+                    "scheme": "wikidata"
+                }
+            ],
+            "name": "12th Riigikogu",
+            "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
+            "start_date": "2011-03-27"
+        },
+        {
+            "classification": "general election",
+            "end_date": "2015-03-01",
+            "id": "Q16412592",
+            "identifiers": [
+                {
+                    "identifier": "Q16412592",
+                    "scheme": "wikidata"
+                }
+            ],
+            "name": "Estonian parliamentary election, 2015",
+            "start_date": "2015-03-01"
+        },
+        {
+            "classification": "legislative period",
+            "id": "term/13",
+            "identifiers": [
+                {
+                    "identifier": "Q20530392",
+                    "scheme": "wikidata"
+                }
+            ],
+            "name": "13th Riigikogu",
+            "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
+            "start_date": "2015-03-30"
+        }
+    ]
+}
+'''
 
 class TestEvents(TestCase):
 
@@ -172,3 +218,31 @@ class TestEvents(TestCase):
             popolo = Popolo.from_filename(fname)
             event = popolo.events[0]
             assert event.current
+
+    def test_no_elections(self):
+        with example_file(EXAMPLE_EVENT_JSON) as fname:
+            popolo = Popolo.from_filename(fname)
+            assert len(popolo.elections) == 0
+
+    def test_elections(self):
+        with example_file(EXAMPLE_MULTIPLE_EVENTS) as fname:
+            popolo = Popolo.from_filename(fname)
+            elections = popolo.elections
+            assert len(elections) == 1
+            assert elections.first.id == 'Q16412592'
+
+    def test_legislative_periods(self):
+        with example_file(EXAMPLE_MULTIPLE_EVENTS) as fname:
+            popolo = Popolo.from_filename(fname)
+            legislative_periods = popolo.legislative_periods
+            assert len(legislative_periods) == 2
+            for lp in legislative_periods:
+                assert lp.classification == 'legislative period'
+            assert popolo.terms.first == legislative_periods.first
+
+    def test_latest_legislative_period(self):
+        with example_file(EXAMPLE_MULTIPLE_EVENTS) as fname:
+            popolo = Popolo.from_filename(fname)
+            legislative_period = popolo.latest_legislative_period
+            assert legislative_period.id == 'term/13'
+            assert legislative_period == popolo.latest_term
