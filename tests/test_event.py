@@ -103,6 +103,32 @@ EXAMPLE_MULTIPLE_EVENTS = b'''
             "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
             "start_date": "2015-03-30"
         }
+    ],
+    "memberships": [
+        {
+            "area_id": "area/tartu_linn",
+            "legislative_period_id": "term/13",
+            "on_behalf_of_id": "IRL",
+            "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
+            "person_id": "014f1aac-a694-4538-8b4f-a533233acb60",
+            "role": "member",
+            "start_date": "2015-04-09"
+        },
+        {
+            "legislative_period_id": "term/12",
+            "on_behalf_of_id": "IRL",
+            "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
+            "person_id": "0259486a-0410-49f3-aef9-8b79c15741a7",
+            "role": "member"
+        },
+        {
+            "area_id": "area/harju-_ja_raplamaa",
+            "legislative_period_id": "term/13",
+            "on_behalf_of_id": "RE",
+            "organization_id": "1ba661a9-22ad-4d0f-8a60-fe8e28f2488c",
+            "person_id": "06d37ec8-45bc-44fe-a138-3427ef12c8dc",
+            "role": "member"
+        }
     ]
 }
 '''
@@ -246,3 +272,10 @@ class TestEvents(TestCase):
             legislative_period = popolo.latest_legislative_period
             assert legislative_period.id == 'term/13'
             assert legislative_period == popolo.latest_term
+
+    def test_event_memberships(self):
+        with example_file(EXAMPLE_MULTIPLE_EVENTS) as fname:
+            popolo = Popolo.from_filename(fname)
+            term = popolo.latest_term
+            memberships = term.memberships
+            assert len(memberships) == 2

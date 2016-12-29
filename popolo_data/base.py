@@ -554,6 +554,13 @@ class Event(CurrentMixin, PopoloObject):
     def identifiers(self):
         return self.get_related_object_list('identifiers')
 
+    @property
+    def memberships(self):
+        return [
+            m for m in self.all_popolo.memberships
+            if m.legislative_period_id == self.id
+        ]
+
 
 class PopoloCollection(object):
 
