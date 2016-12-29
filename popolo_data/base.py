@@ -556,10 +556,11 @@ class Event(CurrentMixin, PopoloObject):
 
     @property
     def memberships(self):
-        return [
-            m for m in self.all_popolo.memberships
+        memberships_list = [
+            m.data for m in self.all_popolo.memberships
             if m.legislative_period_id == self.id
         ]
+        return MembershipCollection(memberships_list, self.all_popolo)
 
 
 class PopoloCollection(object):
