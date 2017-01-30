@@ -578,10 +578,11 @@ class PopoloCollection(object):
         return first(self.object_list)
 
     def filter(self, **kwargs):
-        return [
-            o for o in self.object_list
+        filter_list = [
+            o.data for o in self.object_list
             if all(getattr(o, k) == v for k, v in kwargs.items())
         ]
+        return self.__class__(filter_list, self.all_popolo)
 
     def get(self, **kwargs):
         matches = self.filter(**kwargs)

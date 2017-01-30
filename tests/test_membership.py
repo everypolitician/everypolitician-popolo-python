@@ -191,7 +191,14 @@ EXAMPLE_MULTIPLE_MEMBERSHIPS = b'''
         {
             "person_id": "SP-937-215",
             "organization_id": "starfleet",
-            "start_date": "2327-12-01"
+            "start_date": "2322",
+            "end_date": "2322"
+        },
+        {
+            "person_id": "SP-937-215",
+            "organization_id": "starfleet",
+            "start_date": "2323-12-01",
+            "end_date": "2327-12-01"
         },
         {
             "person_id": "SP-937-215",
@@ -216,9 +223,10 @@ class TestPersonMemberships(TestCase):
             popolo = Popolo.from_filename(fname)
             person = popolo.persons.first
             person_memberships = person.memberships
-            assert len(person_memberships) == 2
+            assert len(person_memberships) == 3
             assert popolo.memberships[0] == person_memberships[0]
             assert popolo.memberships[1] == person_memberships[1]
+            assert popolo.memberships[2] == person_memberships[2]
 
     def test_membership_person_method(self):
         with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
@@ -298,7 +306,7 @@ class TestPersonMemberships(TestCase):
                 set_of_memberships.add(m)
             for m in popolo_b.memberships:
                 set_of_memberships.add(m)
-            assert len(set_of_memberships) == 3
+            assert len(set_of_memberships) == 4
 
     def test_equality_and_inequality_not_implemented(self):
         with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
@@ -314,4 +322,15 @@ class TestPersonMemberships(TestCase):
             person_memberships = person.memberships
             starfleet_memberships = \
                 person_memberships.filter(organization_id="starfleet")
-            assert len(starfleet_memberships) == 1
+            assert len(starfleet_memberships) == 2
+
+    def test_person_membership_multiple_filtering(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            person_memberships = person.memberships
+            starfleet_memberships = \
+                person_memberships.filter(organization_id="starfleet")
+            latest_starfleet_membership = \
+                starfleet_memberships.filter(start_date=date(2323, 12, 1))
+            assert len(latest_starfleet_membership) == 1
