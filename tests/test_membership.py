@@ -306,3 +306,12 @@ class TestPersonMemberships(TestCase):
             m = popolo.memberships.first
             assert not (m == "a string, not a person")
             assert (m != "a string not a person")
+
+    def test_person_membership_filtering(self):
+        with example_file(EXAMPLE_MULTIPLE_MEMBERSHIPS) as fname:
+            popolo = Popolo.from_filename(fname)
+            person = popolo.persons.first
+            person_memberships = person.memberships
+            starfleet_memberships = \
+                person_memberships.filter(organization_id="starfleet")
+            assert len(starfleet_memberships) == 1

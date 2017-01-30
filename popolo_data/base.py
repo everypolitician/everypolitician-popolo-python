@@ -305,10 +305,11 @@ class Person(PopoloObject):
 
     @property
     def memberships(self):
-        return [
-            m for m in self.all_popolo.memberships
+        memberships_list = [
+            m.data for m in self.all_popolo.memberships
             if m.person_id == self.id
         ]
+        return MembershipCollection(memberships_list, self.all_popolo)
 
     __hash__ = PopoloObject.__hash__
 
@@ -558,6 +559,7 @@ class Event(CurrentMixin, PopoloObject):
 class PopoloCollection(object):
 
     def __init__(self, data_list, object_class, all_popolo):
+        self.all_popolo = all_popolo
         self.object_class = object_class
         self.object_list = \
             [self.object_class(data, all_popolo) for data in data_list]
