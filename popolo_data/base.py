@@ -555,6 +555,14 @@ class Event(CurrentMixin, PopoloObject):
     def identifiers(self):
         return self.get_related_object_list('identifiers')
 
+    @property
+    def memberships(self):
+        memberships_list = [
+            m.data for m in self.all_popolo.memberships
+            if m.legislative_period_id == self.id
+        ]
+        return MembershipCollection(memberships_list, self.all_popolo)
+
 
 class PopoloCollection(object):
 
@@ -638,3 +646,15 @@ class EventCollection(PopoloCollection):
     def __init__(self, events_data, all_popolo):
         super(EventCollection, self).__init__(
             events_data, Event, all_popolo)
+
+    @property
+    def elections(self):
+        elections_list = self.filter(classification='general election')
+        elections_data = [election.data for election in elections_list]
+        return EventCollection(elections_data, self.all_popolo)
+
+    @property
+    def legislative_periods(self):
+        lps_list = self.filter(classification='legislative period')
+        legislative_periods_data = [lp.data for lp in lps_list]
+        return EventCollection(legislative_periods_data, self.all_popolo)

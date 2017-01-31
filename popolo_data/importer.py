@@ -47,3 +47,24 @@ class Popolo(object):
     @property
     def events(self):
         return EventCollection(self.json_data.get('events', []), self)
+
+    @property
+    def elections(self):
+        return self.events.elections
+
+    @property
+    def legislative_periods(self):
+        return self.events.legislative_periods
+
+    @property
+    def terms(self):
+        return self.legislative_periods
+
+    @property
+    def latest_legislative_period(self):
+        lps = self.legislative_periods
+        return max(lps, key=lambda lp: lp.start_date.midpoint_date)
+
+    @property
+    def latest_term(self):
+        return self.latest_legislative_period
