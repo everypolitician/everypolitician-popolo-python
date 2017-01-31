@@ -1,3 +1,15 @@
+0.0.11
+    * The 'filter' method on collections now returns another
+      collection.
+    * Add a 'memberships' property to Event, primarily so that
+      members of a legislative period can easily be found.
+    * Add 'elections' and 'legislative_periods' properties to
+      EventCollection to filter down the events to just
+      elections or terms.
+    * Add helper methods to the `Popolo` class to access
+      elections, terms, the latest term, etc. directly.
+    * Thanks to Andy Lulham for contributing these improvements
+      in this version.
 0.0.10
     * Fix the Person.twitter property when no Twitter details
       were found.
