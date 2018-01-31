@@ -7,3 +7,4 @@
 /htmlcov
 /everypolitician_popolo.egg-info
 /dist
+/.pytest_cache
