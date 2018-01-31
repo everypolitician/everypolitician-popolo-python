@@ -133,6 +133,7 @@ EXAMPLE_MULTIPLE_EVENTS = b'''
 }
 '''
 
+
 class TestEvents(TestCase):
 
     def test_empty_file_gives_no_events(self):
